@@ -35,10 +35,10 @@ along with SuperCanvas.  If not, see <http://www.gnu.org/licenses/>.
 		xhr.open('GET', url, true);
 		xhr.onreadystatechange = function(evt){
 			if(xhr.readyState === 4){
-				if(xhr.status === 200){
+				if(xhr.status === 200 || xhr.status === 0){
 					callback(xhr);
 				}else{
-					console.log("Error!", xhr.statusText);
+					console.log("Error!", xhr.statusText,xhr.status);
 				}
 			}
 		};
@@ -216,11 +216,13 @@ along with SuperCanvas.  If not, see <http://www.gnu.org/licenses/>.
                    this.currentGlyphData = {'fontName': fontName, 'glyphName': unicode};
                 }
                 var T = this;
-				gOption.addEventListener('click', function(e){
-                    T.currentGlyphData = {'fontName': fontName, 'glyphName': unicode};
+				gOption.addEventListener('click', function(f,g){
+return function(e){
+                    T.currentGlyphData = {'fontName': f, 'glyphName': g};
                         //showGlyph(horz, d);
                         //currentGlyph = glyphName;
-                    }, false);
+                    };
+}(fontName, unicode), false);
 				option.docFrag.appendChild(gOption);
 			}	
 			option.addEventListener("click", function(ev){
@@ -283,11 +285,10 @@ along with SuperCanvas.  If not, see <http://www.gnu.org/licenses/>.
         this.relY = y - (this.prevY || 0);
         this.prevX = x;
         this.prevY = y;
-        if(this.clicking && this.keyCode === '17'){
+        if(this.clicking && this.keyCode === 17){
             this.scrollX = (this.scrollX || 0) + this.relX;
             this.scrollY = (this.scrollY || 0) + this.relY;
         }
-        //console.log(this.relX, this.relY);
     }, false);
     canvas.addEventListener("mousedown", function(ev){
         this.clicking = true;

@@ -36,7 +36,7 @@ superCanvas.parsePath = function(d){
 	    //console.log(command);
 	    pathArr.push(command);
 	}
-	return pathArr.slice();
+	return superCanvas.normalizePath(pathArr.slice());
 };
 superCanvas.fillTextU = function(text, x, y, maxWidth){
 this.save();
@@ -53,8 +53,12 @@ superCanvas.pathCommands = {
         'C': 'bezierCurve2',
         'Q': 'quadraticCurve2',
         'T': 'smoothQuadraticCurve2',
-        'Z': 'closePath',
-        'z': 'closePath'};
+        'Z': 'closePath2',
+        'z': 'closePath2'};
+superCanvas.closePath2 = function(){
+	this.closePath();
+	return [0,0];
+};
 superCanvas.line2 = function(x, y){ // haha! its a pun! 
 	this.lineTo(x, y);
     return [x, y];
@@ -101,7 +105,7 @@ superCanvas.smoothQuadraticCurve2 = function(x,y){
                                  this.lastCPx = newX;
                                  this.lastCPy = newY;
                                  //newCommand = ['Q', newX, newY, command[1], command[2]];
-                                 this.quadraticCurve2(newX, newY, x, y);
+                                 return this.quadraticCurve2(newX, newY, x, y);
 };
 superCanvas.horizontalLine2 = function(x){
 	this.line2(this.cX[this.cX.length-1], this.cY[this.cY.length-1]);
@@ -129,13 +133,16 @@ superCanvas.drawPath = function(dArr){
         var c = d[i].slice(0);
 		this.currentPath.push(c.slice());
 		command = c.shift();
-        console.log(command);
 		//while(this.pathLengths[command.toUpperCase()] <= c.length){
             //var cee = c.splice(0,this.pathLengths[command.toUpperCase()]);
             //console.log(cee);
             var C = this[superCanvas.pathCommands[command]].apply(this, c);
-            this.cX.push(C[0]);
-            this.cY.push(C[1]);
+            try  {
+             this.cX.push(C[0]);
+             this.cY.push(C[1]);
+	    }catch(e){
+		throw command;
+	    }
 		    this.lastCommand = command;
             centerX += parseFloat(this.cX[this.cX.length-1]);
             centerY += parseFloat(this.cY[this.cY.length-1]);
@@ -144,20 +151,27 @@ superCanvas.drawPath = function(dArr){
     return [centerX/this.cX.length, centerY/this.cY.length];
 };
 superCanvas.normalizePath = function(pathD){
+    if(pathD.normalized){
+	console.log("this path has already been normalized!");
+	return;
+    }else{
+	pathD.normalized = true;
+	
+    }
     var path = [],
     lx = 0, ly = 0, i;
     var P = [];
-    for(i = 0; i<pathD.length; i++){
+    /*for(i = 0; i<pathD.length; i++){
         var newCommand = pathD[i].slice();
         nc = newCommand.shift();
-        console.log(nc);
-        while(this.pathLengths[nc.toUpperCase()] <= newCommand.length){
-            encee = newCommand.splice(0, this.pathLengths[nc.toUpperCase()]);
+        //console.log(nc);
+        while(superCanvas.pathLengths[nc.toUpperCase()] <= newCommand.length){
+            encee = newCommand.splice(0, superCanvas.pathLengths[nc.toUpperCase()]);
             encee.unshift(nc);
             P.push(encee);
         }
     }
-    pathD = P;
+    pathD = P;*/
     for(i = 0; i<pathD.length; i++){
         command = pathD[i].slice();
         var newCommand = command;
