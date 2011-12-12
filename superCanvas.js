@@ -16,7 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SuperCanvas.  If not, see <http://www.gnu.org/licenses/>.
 */
-superCanvas = function(el){
+/**
+ * @namespace 
+ * @class Construct a new superCanvas Instance
+ * @param el reference to the canvas element to use for the context
+ */
+var superCanvas = function(el){
     var obj, e;
     obj = el.getContext("2d");
     for(e in superCanvas){
@@ -27,6 +32,12 @@ superCanvas = function(el){
     obj.external = el;
     return obj;
 };
+/**
+ * @description parses the SVG path for use
+ * @static
+ * @param {String}d the path to process
+ * @returns {Array[]} A 2D array of SVG commands
+ */
 superCanvas.parsePath = function(d){
 	d = d.replace(/([a-z])/ig, " $1 ");
 	var splitPath = d.match(/([a-z][^a-z]*)/ig),
@@ -38,6 +49,13 @@ superCanvas.parsePath = function(d){
 	}
 	return superCanvas.normalizePath(pathArr.slice());
 };
+/**
+ * @description just fills text in upside down, really only useful if you are trying to debug SVG font glyphs
+ * @param text the string to fill
+ * @param x the x coordinate for the text
+ * @param y the y coordinate for the text
+ * @param maxWidth the maximum width for the text
+ */
 superCanvas.fillTextU = function(text, x, y, maxWidth){
 this.save();
 this.translate(x, y);
@@ -45,6 +63,9 @@ this.scale(1,-1);
 this.fillText(text, 0,0, maxWidth);
 this.restore();
 };
+/**
+ * @description maps different SVG path commands to superCanva commands
+*/
 superCanvas.pathCommands = {
         'M': 'move2',
         'L': 'line2',
@@ -122,6 +143,10 @@ superCanvas.pathLengths =
         'S': 4,
         'Q': 4,
         'T': 2};
+/**
+ * @description draws a path created with superCanvas.parsePath
+ * @param dArr the path to draw
+*/
 superCanvas.drawPath = function(dArr){
 	this.cX = [];
 	this.cY = [];
@@ -150,6 +175,11 @@ superCanvas.drawPath = function(dArr){
 	}
     return [centerX/this.cX.length, centerY/this.cY.length];
 };
+/**
+ * @decaprecated
+ * @description normalized a path (remove Horizontal and Vertical commands, uncompacts commands, and makes everything absolute)
+ * @param pathD the path data to normalize
+ */
 superCanvas.normalizePath = function(pathD){
     if(pathD.normalized){
 	console.log("this path has already been normalized!");
@@ -220,4 +250,33 @@ superCanvas.normalizePath = function(pathD){
         path.push(newCommand);
     }
     return path;
+};
+/**
+ * @description resize a Image, Canvas or Video Element without blurring (at time of writng, chrome can't do this with CSS)
+ * @function
+ * @param imageElement the Image, Canvas or Video Element to be scaled
+ * @param w the new width for the element
+ * @param h the new height for the element
+*/
+superCanvas.resizeImage = function(imageElement, w, h){
+    image=document.createElement("canvas");
+    image.width = imageElement.width;
+    image.height = imageElement.height;
+    ctx = image.getContext("2d");
+    ctx.drawImage(imageElement, 0,0,imageElement.width,imageElement.height);
+    imgData = ctx.getImageData(0,0,image.width,image.height);
+    image.width = w;
+    image.height= h;
+    ctx.scale((w/imageElement.width),(h/imageElement.height));
+    var leewayX = imageElement.width/w;
+    var leewayY = imageElement.height/h;
+    for(var x = 0; x<imgData.width; x++){
+        for(var y = 0; y<imgData.height; y++){
+            var p = (x + y*imgData.width)*4;
+            var P = [].slice.call(imgData.data,p, p+4);
+            ctx.fillStyle="rgba("+P.join(',')+")";
+            ctx.fillRect(x,y,1+leewayX,1+leewayY);
+        }
+    }
+    return image;
 };

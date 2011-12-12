@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NYAN!</title>
+<script type="text/javascript" src="../../superCanvas.js"></script>
+</head>
+<body>
+<canvas width="500" height="500"></canvas>
+<script>
+window.addEventListener("load", function(){
+        var imageNames = ["head",
+                      "poptart",
+                      "appendages"];
+        var canvas = document.querySelector("canvas");
+        var ctx = canvas.getContext("2d");
+        var images = {};
+        var tempImages = {};
+        var loaded = 0;
+        for(var i = imageNames.length; i--; ){
+                var n = imageNames[i];
+                tempImages[n] = new Image();
+                tempImages[n].onload = function(N){
+                        return function(){
+                                loaded++;
+                                        
+                                images[N] = superCanvas.resizeImage(this, this.width*10, this.height*10);
+                                if(loaded===3){
+                                        draw();
+                                        console.log(images, loaded);
+                                };
+                        };
+                }(n);
+                tempImages[n].src=n+".png";
+        }
+var bumps = [
+        [0, -1], // Up
+        [1, -1], //Top Right
+        [1, 0 ], //right
+        [1, 1 ], //bottom left;
+        [0, 1 ], //down
+        [-1,1 ], //bottom left
+        [-1, 0], // left
+        [-1, -1], //right 
+        ];
+        var draw = function(){
+                canvas.width=(31+2)*10;
+                canvas.height=(19+2)*10;
+                for(n in images){
+                        var bumpX = bumpY = 1;
+                        if(n==="appendages"){
+                                bumpX += bumps[draw.frames%8][0];
+                                bumpY += bumps[draw.frames%8][1];
+                        }else if(n === "head"){
+                                bumpX += bumps[7-(draw.frames%8)][0];
+                                bumpY += bumps[7-(draw.frames%8)][1];
+                        }
+                        ctx.drawImage(images[n], bumpX*10, bumpY*10);
+                }
+                draw.frames ++;
+                setTimeout(draw, 1000/10);
+        };
+        draw.frames = 0;
+}, false);
+</script>
+</body>
+</html>
