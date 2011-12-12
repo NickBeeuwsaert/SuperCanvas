@@ -3,6 +3,19 @@
 <head>
 <title>NYAN!</title>
 <script type="text/javascript" src="../../superCanvas.js"></script>
+<style>
+body,html {
+	margin: 0;
+	height: 100%;
+}
+canvas {
+	position:absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -150px;
+	margin-top: -90px;
+}
+</style>
 </head>
 <body>
 <canvas width="500" height="500"></canvas>
@@ -28,14 +41,14 @@ window.addEventListener("load", function(){
                 };
         image.src="sprite.png";
         var bumps = [
-                [0, -1], // Up
-                [1, -1], //Top Right
-                [1, 0 ], //right
-                [1, 1 ], //bottom left;
-                [0, 1 ], //down
-                [-1,1 ], //bottom left
+                [ 0, 0], // Up
+                [ 1, 0], //Top Right
+                [ 1, 0], //right
+                [ 1, 1], //bottom left;
+                [ 0, 1], //down
+                [-1, 1], //bottom left
                 [-1, 0], // left
-                [-1, -1], //right 
+                [-1, 0], //right 
                 ];
         var draw = function(){
                 canvas.width=(31+2)*10;
@@ -46,13 +59,13 @@ window.addEventListener("load", function(){
                                 bumpX += bumps[draw.frames%8][0];
                                 bumpY += bumps[draw.frames%8][1];
                         }else if(n === 2){
-                                bumpX += bumps[7-(draw.frames%8)][0];
-                                bumpY += bumps[7-(draw.frames%8)][1];
+                                bumpX += bumps[(draw.frames+6)%8][0];
+                                bumpY += bumps[(draw.frames+6)%8][1];
                         }
                         ctx.drawImage(images[n], bumpX*10, bumpY*10);
                 }
                 draw.frames ++;
-                setTimeout(draw, 1000/10);
+                setTimeout(draw, 1000/24);
         };
         draw.frames = 0;
 }, false);
