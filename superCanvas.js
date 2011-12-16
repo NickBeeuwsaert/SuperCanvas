@@ -191,7 +191,7 @@ superCanvas.normalizePath = function(pathD){
     var path = [],
     lx = 0, ly = 0, i;
     var P = [];
-    /*for(i = 0; i<pathD.length; i++){
+    /*  for(i = 0; i<pathD.length; i++){
         var newCommand = pathD[i].slice();
         nc = newCommand.shift();
         //console.log(nc);
@@ -202,6 +202,25 @@ superCanvas.normalizePath = function(pathD){
         }
     }
     pathD = P;*/
+    for(i = 0; i < pathD.length; i++){
+        var command = pathD[i].slice();
+        var commandName = command.shift();
+        var uncompactedCommands = [];
+        if(superCanvas.pathLengths[commandName.toUpperCase()] < command.length){
+            //console.log("an atrocity has occurred: '%s': [%s]", commandName, command.toString());
+            while(command.length >= superCanvas.pathLengths[commandName.toUpperCase()]){
+                var coords = command.splice(0,superCanvas.pathLengths[commandName.toUpperCase()]);
+               coords.unshift(commandName);
+                [].push.call(uncompactedCommands, coords);
+}
+            console.log(uncompactedCommands);
+            [].push.apply(P, uncompactedCommands);
+        }else{
+            P.push(pathD[i]);
+        }
+        
+    }
+    pathD = P;
     for(i = 0; i<pathD.length; i++){
         command = pathD[i].slice();
         var newCommand = command;
