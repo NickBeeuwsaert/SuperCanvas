@@ -1,0 +1,8 @@
+/* TEAM */
+    Developer: Nick Beeuwsaert
+    Contact: razer@razerwolf.com
+    Twitter: @r4z0rw0lf
+/* THANKS */
+    For jsonp.net, sweet code snippets and being a awesome guy: Jason Miller
+    Twitter: @developit
+
