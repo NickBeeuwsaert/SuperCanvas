@@ -43,7 +43,7 @@ superCanvas.parsePath = function(d){
 	var splitPath = d.match(/([mlhvcqtz][^mlhvcqtz]*)/ig),
 	pathArr = [], i = 0;
 	for(i = 0; i!==splitPath.length; i++){
-	    command = splitPath[i].match(/[\-0-9e]?([^ ,\-e]+)/ig);
+	    command = splitPath[i].match(/[\-0-9e]?([^ ,]+)/ig);
 	    //console.log(command);
 	    pathArr.push(command);
 	}
