@@ -39,7 +39,7 @@ var superCanvas = function(el){
  * @returns {Array[]} A 2D array of SVG commands
  */
 superCanvas.parsePath = function(d){
-	d = d.replace(/([a-z])/ig, " $1 ");
+	d = d.replace(/([mlhvcqtz])/ig, " $1 ");
 	var splitPath = d.match(/([mlhvcqtz][^mlhvcqtz]*)/ig),
 	pathArr = [], i = 0;
 	for(i = 0; i!==splitPath.length; i++){
