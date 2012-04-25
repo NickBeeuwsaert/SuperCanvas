@@ -40,10 +40,10 @@ var superCanvas = function(el){
  */
 superCanvas.parsePath = function(d){
 	d = d.replace(/([a-z])/ig, " $1 ");
-	var splitPath = d.match(/([a-z][^a-z]*)/ig),
+	var splitPath = d.match(/([mlhvcqtz][^mlhvcqtz]*)/ig),
 	pathArr = [], i = 0;
 	for(i = 0; i!==splitPath.length; i++){
-	    command = splitPath[i].match(/[\-0-9]?([^ ,\-]+)/ig);
+	    command = splitPath[i].match(/[\-0-9e]?([^ ,\-]+)/ig);
 	    //console.log(command);
 	    pathArr.push(command);
 	}
@@ -166,6 +166,7 @@ superCanvas.drawPath = function(dArr){
              this.cX.push(C[0]);
              this.cY.push(C[1]);
 	    }catch(e){
+		console.error(command);
 		throw command;
 	    }
 		    this.lastCommand = command;
