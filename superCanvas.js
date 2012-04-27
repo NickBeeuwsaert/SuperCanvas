@@ -44,7 +44,7 @@ superCanvas.parsePath = function(d){
 	pathArr = [], i = 0;
 	for(i = 0; i!==splitPath.length; i++){
 	    //command = splitPath[i].match(/[\-0-9e]?([^ ,]+)/ig);
-	    command = splitPath[i].match(/[+\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?/ig);
+	    command = splitPath[i].match(/([+\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?|[mlhvcqtz])/ig);
 	    //command = splitPath[i].match(/([\-0-9e])?([^ ,\-](e[\-])?)+/ig);
 	    console.log(splitPath[i]);
 	    pathArr.push(command);
