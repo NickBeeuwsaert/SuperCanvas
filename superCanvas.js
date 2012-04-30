@@ -39,12 +39,12 @@ var superCanvas = function(el){
  * @returns {Array[]} A 2D array of SVG commands
  */
 superCanvas.parsePath = function(d){
-	d = d.replace(/([mlhvcqtz])/ig, " $1 ");
-	var splitPath = d.match(/([mlhvcqtz][^mlhvcqtz]*)/ig),
+	d = d.replace(/([mlhvcqtzs])/ig, " $1 ");
+	var splitPath = d.match(/([mlhvcqtzs][^mlhvcqtzs]*)/ig),
 	pathArr = [], i = 0;
 	for(i = 0; i!==splitPath.length; i++){
 	    //command = splitPath[i].match(/[\-0-9e]?([^ ,]+)/ig);
-	    command = splitPath[i].match(/([+\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?|[mlhvcqtz])/ig);
+	    command = splitPath[i].match(/([\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?|[mlhvcqtzs])/ig);
 	    //command = splitPath[i].match(/([\-0-9e])?([^ ,\-](e[\-])?)+/ig);
 	    console.log(splitPath[i]);
 	    pathArr.push(command);
@@ -76,6 +76,7 @@ superCanvas.pathCommands = {
         'C': 'bezierCurve2',
         'Q': 'quadraticCurve2',
         'T': 'smoothQuadraticCurve2',
+        'S': 'smoothCubicCurve2',
         'Z': 'closePath2',
         'z': 'closePath2'};
 superCanvas.closePath2 = function(){
@@ -130,6 +131,35 @@ superCanvas.smoothQuadraticCurve2 = function(x,y){
                                  //newCommand = ['Q', newX, newY, command[1], command[2]];
                                  return this.quadraticCurve2(newX, newY, x, y);
 };
+superCanvas.smoothCubicCurve2 = function(cpX, cpY, x,y){
+
+                                 var lastCommand = this.currentPath[this.currentPath.length-2];
+                                 //console.log(lastCommand);
+                                 var lastCPx = parseFloat(x),
+                                     lastCPy = parseFloat(y),
+                                     lastX = parseFloat(lastCommand[lastCommand.length-2]),
+                                     lastY = parseFloat(lastCommand[lastCommand.length-1]), newX, newY;
+                                 newX = newY = 0;
+                                 if(lastCommand[0] === 'C'){
+                                         lastCPx = parseFloat(lastCommand[3]);
+                                         lastCPy = parseFloat(lastCommand[4]);
+                                         
+
+                                 }else 
+                                 if(lastCommand[0] === 'S'){
+                                         lastCPx = this.lastCPx;
+                                         lastCPy = this.lastCPy;
+                                 }else{
+                                        lastCPx = cpX;//parseFloat(lastCommand[lastCommand.length-2]);
+                                        lastCPy = cpY;//parseFloat(lastCommand[lastCommand.length-1]);
+                                }
+                                 newX = lastX + (lastX - lastCPx);// + (lastCPx * Math.cos(Math.PI)) - (lastCPy * Math.sin(Math.PI));
+                                 newY = lastY + (lastY - lastCPy);// + (lastCPx * Math.sin(Math.PI)) - (lastCPy * Math.cos(Math.PI));
+                                 this.lastCPx = newX;
+                                 this.lastCPy = newY;
+                                 //newCommand = ['Q', newX, newY, command[1], command[2]];
+                                 return this.bezierCurve2(newX, newY,cpX, cpY, x, y);
+};
 superCanvas.horizontalLine2 = function(x){
 	this.line2(this.cX[this.cX.length-1], this.cY[this.cY.length-1]);
 	return [x,this.cY[this.cY.length-1]];
@@ -163,12 +193,13 @@ superCanvas.drawPath = function(dArr){
 		//while(this.pathLengths[command.toUpperCase()] <= c.length){
             //var cee = c.splice(0,this.pathLengths[command.toUpperCase()]);
             //console.log(cee);
-            var C = this[superCanvas.pathCommands[command]].apply(this, c);
             try  {
+            var C = this[superCanvas.pathCommands[command]].apply(this, c);
              this.cX.push(C[0]);
              this.cY.push(C[1]);
 	    }catch(e){
 		console.error(command);
+		console.error(this[superCanvas.pathCommands[command]]);
 		throw command;
 	    }
 		    this.lastCommand = command;
