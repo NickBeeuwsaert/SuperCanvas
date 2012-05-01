@@ -244,7 +244,7 @@ superCanvas.normalizePath = function(pathD){
             //console.log("an atrocity has occurred: '%s': [%s]", commandName, command.toString());
             while(command.length >= superCanvas.pathLengths[commandName.toUpperCase()]){
                 var coords = command.splice(0,superCanvas.pathLengths[commandName.toUpperCase()]);
-		if(i > 0 && commandName.toUpperCase()=='M'){ commandName = commandName.toUpperCase()==commandName?'L':'l'; console.log("D:");}
+		if(commandName.toUpperCase()=='M'){ commandName = commandName.toUpperCase()==commandName?'L':'l'; console.log("D:");}
                coords.unshift(commandName);
                 [].push.call(uncompactedCommands, coords);
 }
