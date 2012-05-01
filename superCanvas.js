@@ -180,6 +180,9 @@ superCanvas.pathLengths =
  * @param dArr the path to draw
 */
 superCanvas.drawPath = function(dArr){
+	if(typeof(dArr) === "string"){
+		dArr = this.parsePath(dArr);
+	}
 	this.cX = [];
 	this.cY = [];
 	this.currentPath = [];
