@@ -177,7 +177,7 @@ superCanvas.pathLengths =
         'T': 2};
 /**
  * @description draws a path created with superCanvas.parsePath
- * @param dArr the path to draw
+ * @param dArr the path to draw. Can be either a SVG path or a array created with SuperCanvas.parsePath
 */
 superCanvas.drawPath = function(dArr){
 	if(typeof(dArr) === "string"){
