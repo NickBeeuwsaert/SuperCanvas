@@ -1,6 +1,6 @@
 SuperCanvas
 ===========
-What is this conglomeration of javascript and <s>bad coding</s> syntactic sugar you ask?  
+What is this conglomeration of javascript you ask?  
 WELL! SuperCanvas is:  
 
  *  a SVG command parser!  
