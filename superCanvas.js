@@ -19,6 +19,7 @@ along with SuperCanvas.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * @namespace 
  * @class Construct a new superCanvas Instance
+ * @constructor
  * @param el reference to the canvas element to use for the context
  */
 var superCanvas = function(el){
@@ -57,6 +58,7 @@ superCanvas.parsePath = function(d){
  * @param x the x coordinate for the text
  * @param y the y coordinate for the text
  * @param maxWidth the maximum width for the text
+ * @memberOf superCanvas#
  */
 superCanvas.fillTextU = function(text, x, y, maxWidth){
 this.save();
@@ -170,6 +172,7 @@ superCanvas.verticalLine2 = function(y){
 /**
  * @description skews the canvas on the X axis
  * @param radians the amount of radians to skew the X axis on
+ * @memberOf superCanvas#
  */
 superCanvas.skewX = function(radians){
     this.transform(1,0,Math.tan(radians), 1, 0, 0);
@@ -177,6 +180,7 @@ superCanvas.skewX = function(radians){
 /**
  * @description skews the canvas on the Y axis
  * @param radians the amount of radians to skew the Y axis on
+ * @memberOf superCanvas#
  */
 superCanvas.skewY = function(radians){
     this.transform(1,Math.tan(radians), 0, 1, 0, 0);
@@ -185,6 +189,7 @@ superCanvas.skewY = function(radians){
  * @description skews the canvas on the X and Y axis
  * @param radiansX how many radians to skew on the X axis
  * @param radiansY how many radians to skew on the Y axis
+ * @memberOf superCanvas#
  */
 superCanvas.skew = function(radiansX, radiansY){
     this.transform(1,Math.tan(radiansY), Math.tan(radiansX), 1, 0, 0);
@@ -200,6 +205,7 @@ superCanvas.pathLengths =
 /**
  * @description draws a path created with superCanvas.parsePath
  * @param dArr the path to draw. Can be either a SVG path or a array created with SuperCanvas.parsePath
+ * @memberOf superCanvas#
 */
 superCanvas.drawPath = function(dArr){
 	if(typeof(dArr) === "string"){
