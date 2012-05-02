@@ -155,9 +155,8 @@ superCanvas.smoothCubicCurve2 = function(cpX, cpY, x,y){
                                 }
                                  newX = lastX + (lastX - lastCPx);// + (lastCPx * Math.cos(Math.PI)) - (lastCPy * Math.sin(Math.PI));
                                  newY = lastY + (lastY - lastCPy);// + (lastCPx * Math.sin(Math.PI)) - (lastCPy * Math.cos(Math.PI));
-                                 this.lastCPx = newX;
-                                 this.lastCPy = newY;
-                                 //newCommand = ['Q', newX, newY, command[1], command[2]];
+                                 this.lastCPx = cpX;
+                                 this.lastCPy = cpY;
                                  return this.bezierCurve2(newX, newY,cpX, cpY, x, y);
 };
 superCanvas.horizontalLine2 = function(x){
