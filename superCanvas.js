@@ -167,6 +167,29 @@ superCanvas.verticalLine2 = function(y){
 	this.line2(this.cX[this.cX.length-1], this.cY[this.cY.length-1]);
 	return [this.cX[this.cX.length-1], y];
 };
+/**
+ * @description skews the canvas on the X axis
+ * @param radians the amount of radians to skew the X axis on
+ */
+superCanvas.skewX = function(radians){
+    this.transform(1,0,Math.tan(radians), 1, 0, 0);
+};
+/**
+ * @description skews the canvas on the Y axis
+ * @param radians the amount of radians to skew the Y axis on
+ */
+superCanvas.skewY = function(radians){
+    this.transform(1,Math.tan(radians), 0, 1, 0, 0);
+};
+/**
+ * @description skews the canvas on the X and Y axis
+ * @param radiansX how many radians to skew on the X axis
+ * @param radiansY how many radians to skew on the Y axis
+ */
+superCanvas.skew = function(radiansX, radiansY){
+    this.transform(1,Math.tan(radiansY), Math.tan(radiansX), 1, 0, 0);
+
+};
 superCanvas.pathLengths = 
        {'L': 2,
         'M': 2,
