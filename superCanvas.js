@@ -140,13 +140,13 @@ superCanvas.smoothCubicCurve2 = function(cpX, cpY, x,y){
                                      lastX = parseFloat(lastCommand[lastCommand.length-2]),
                                      lastY = parseFloat(lastCommand[lastCommand.length-1]), newX, newY;
                                  newX = newY = 0;
-                                 if(lastCommand[0].toUpperCase() === 'C'){
+                                 if(lastCommand[0] === 'C'){
                                          lastCPx = parseFloat(lastCommand[3]);
                                          lastCPy = parseFloat(lastCommand[4]);
                                          
 
                                  }else 
-                                 if(lastCommand[0].toUpperCase() === 'S'){
+                                 if(lastCommand[0] === 'S'){
                                          lastCPx = this.lastCPx;
                                          lastCPy = this.lastCPy;
                                  }else{
