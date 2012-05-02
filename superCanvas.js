@@ -248,7 +248,7 @@ superCanvas.normalizePath = function(pathD){
             while(command.length >= superCanvas.pathLengths[commandName.toUpperCase()]){
                 var coords = command.splice(0,superCanvas.pathLengths[commandName.toUpperCase()]);
                coords.unshift(commandName);
-		if(commandName.toUpperCase()=='M'){ commandName = commandName.toUpperCase()==commandName?'L':'l';}
+		//if(commandName.toUpperCase()=='M'){ commandName = commandName.toUpperCase()==commandName?'L':'l';}
                 [].push.call(uncompactedCommands, coords);
 }
             //console.log(uncompactedCommands);
