@@ -40,12 +40,12 @@ var superCanvas = function(el){
  * @returns {Array[]} A 2D array of SVG commands
  */
 superCanvas.parsePath = function(d){
-	d = d.replace(/([mlhvcqtzs])/ig, " $1 ");
-	var splitPath = d.match(/([mlhvcqtzs][^mlhvcqtzs]*)/ig),
+	d = d.replace(/([mlhvcqtzsa])/ig, " $1 ");
+	var splitPath = d.match(/([mlhvcqtzsa][^mlhvcqtzsa]*)/ig),
 	pathArr = [], i = 0;
 	for(i = 0; i!==splitPath.length; i++){
 	    //command = splitPath[i].match(/[\-0-9e]?([^ ,]+)/ig);
-	    command = splitPath[i].match(/([\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?|[mlhvcqtzs])/ig);
+	    command = splitPath[i].match(/([\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?|[mlhvcqtzsa])/ig);
 	    //command = splitPath[i].match(/([\-0-9e])?([^ ,\-](e[\-])?)+/ig);
 	    //console.log(splitPath[i]);
 	    pathArr.push(command);
@@ -79,6 +79,7 @@ superCanvas.pathCommands = {
         'Q': 'quadraticCurve2',
         'T': 'smoothQuadraticCurve2',
         'S': 'smoothCubicCurve2',
+        'A': 'eArc',
         'Z': 'closePath2',
         'z': 'closePath2'};
 superCanvas.closePath2 = function(){
@@ -169,6 +170,120 @@ superCanvas.verticalLine2 = function(y){
 	this.line2(this.cX[this.cX.length-1], this.cY[this.cY.length-1]);
 	return [this.cX[this.cX.length-1], y];
 };
+superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
+    var x1 = this.cX[this.cX.length-1];
+    var y1 = this.cY[this.cY.length-1];
+    theta *= (Math.PI/180)
+    theta %= Math.PI*2;
+    var mx = (x1-x2)/2;
+    var my = (y1-y2)/2;
+    var Mx = (x1+x2)/2;
+    var My = (y1+y2)/2;
+    x1p = cos(theta) * mx + sin(theta)*my;
+    y1p =-sin(theta) * mx + cos(theta)*my;
+    //console.log("x1' "+ x1p, "y1' "+y1p);
+    rx = Math.abs(rx);
+    ry = Math.abs(ry);
+    D = pow(x1p,2)/ pow(rx,2) + pow(y1p,2)/pow(ry,2);
+    if (D > 1){
+        rx = Math.sqrt(D)*rx;
+        ry = Math.sqrt(D)*ry;
+    }
+    var c = Math.sqrt(Math.abs((pow(rx,2)*pow(ry, 2) - pow(rx,2)*pow(y1p,2) - pow(ry,2)*pow(x1p,2))/
+              (pow(rx,2)*pow(y1p,2) + pow(ry,2)*pow(x1p,2))));
+    
+    if(fS == fA){
+        c= -c;
+        //c*= -1;
+    }
+    cxp = c;
+    cyp = c;
+    //console.log("cxp initial: ", cxp);
+    cxp *= (rx*y1p)/ry;
+    cyp *= -((ry*x1p)/rx);
+    //console.log("cxp next: ", cxp);
+    
+    
+    var cx = cos(theta)*cxp - sin(theta)*cyp;
+    var cy = sin(theta)*cxp + cos(theta)*cyp;
+    cx += Mx;
+    cy += My;
+
+
+    // begin calculating theta1 and Dtheta...
+    // theta1 is the starting angle,
+    // and dTheta is difference betwix the end and the start
+    function norm(v){
+        var norm = 0;
+        for(var i = 0; i < v.length;i++){
+            norm += Math.pow(Math.abs(v[i]), 2);
+        }
+        return Math.sqrt(norm);
+    }
+    function getAngle(u, v){
+        var sign = u[0] * v[1] - u[1]*v[0] < 0 ? -1: 1;
+        var toBe = u[0]*v[0] + u[1]*v[1];
+        var orNot= norm(u)*norm(v);
+        var r = toBe/orNot;
+        if(r < -1){
+            r = -1;
+        }else if(r > 1){
+            r = 1;
+        }
+        var res = Math.acos(r);
+        //console.log("result of acos: "+ res+" numerator: "+toBe+" denominator: "+ orNot +" " + (toBe/orNot));
+        return sign * res;
+    }
+    //console.log("theta1", x1p,cxp, rx);
+    var theta1 = getAngle([1, 0], [(x1p-cxp)/rx,(y1p-cyp)/ry]);
+    var Dtheta = getAngle([(x1p-cxp)/rx,(y1p-cyp)/ry],[(-x1p-cxp)/rx,(-y1p-cyp)/ry] )%(Math.PI*2);
+    if(fS == 0 && Dtheta > 0){
+        Dtheta -= Math.PI*2;
+    }else if(fS == 1 && Dtheta < 0){
+        Dtheta += Math.PI*2;
+    }
+    //console.log(theta1, Dtheta);
+/*    context.beginPath();
+    context.moveTo(x1, y1);
+context.lineTo(cx, cy);
+context.lineTo(x2,y2);
+context.stroke();
+context.closePath();*/
+//context.beginPath();
+    var begin = theta1;
+    var end = theta1 + Dtheta;
+var i = theta1;
+    var a = (Math.PI/180);
+    var x = x1;
+    var y = y1;
+//for(var i = begin; i%Math.PI < end; i+=t*(Math.PI/180)){
+    var end = (theta1+Dtheta);
+    if(i > end){
+        i = theta1 + Dtheta;
+        end = theta1;
+    }
+    //console.log("angles!", i * (180/Math.PI),i < end?"<":">",end * (180/Math.PI));
+    while(i <= end){
+        i+= a;
+    //var x = rx * cos(i);
+    //var y = ry * sin(i);
+    var I = i;
+    if(fS==0){
+        I = end - I;
+    }
+    if(fA != 0 && fS != 0){
+        I += end;
+    }
+    x = cx + (cos(I)*rx*cos(theta) - sin(I)*ry*sin(theta));
+    y = cy + (cos(I)*rx*sin(theta) + sin(I)*ry*cos(theta));
+    context.lineTo(x,y);
+    //var nX = cos(theta)*x - sin(theta)*y;
+    //var nY = sin(theta)*x + cos(theta)*y;;
+}
+//context.stroke();
+//context.closePath();
+return [x2,y2]
+}};
 /**
  * @description skews the canvas on the X axis
  * @param radians the amount of radians to skew the X axis on
@@ -201,7 +316,8 @@ superCanvas.pathLengths =
         'C': 6,
         'S': 4,
         'Q': 4,
-        'T': 2};
+        'T': 2,
+        'A': 8};
 /**
  * @description draws a path created with superCanvas.parsePath
  * @param dArr the path to draw. Can be either a SVG path or a array created with SuperCanvas.parsePath
@@ -300,6 +416,7 @@ superCanvas.normalizePath = function(pathD){
                                  newCommand = ['L', lx, (command[0]==='V'?0:ly) + parseFloat(command[1])];
                 break;
                 case 'l':
+                case 'a':
                 case 'm':
                 case 'q':
                 case 's':
@@ -308,9 +425,14 @@ superCanvas.normalizePath = function(pathD){
                     var I = 0;
                     newCommand[0] = newCommand[0].toUpperCase();
                     var LC = [lx,ly];
-                    for(I = 2; I < newCommand.length; I+=2){
-                        newCommand[I-1] = LC[0] + parseFloat(newCommand[I-1]) ;
-                        newCommand[I]   = LC[1] +parseFloat(newCommand[I]);
+                    if(newCommand[0] == 'A'){
+                        newCommand[newCommand.length -1] = LC[1] + parseFloat(newCommand[newCommand.length -1]);
+                        newCommand[newCommand.length -2] = LC[0] + parseFloat(newCommand[newCommand.length -2]);
+                    }else{
+                        for(I = 2; I < newCommand.length; I+=2){
+                           newCommand[I-1] = LC[0] + parseFloat(newCommand[I-1]) ;
+                           newCommand[I]   = LC[1] + parseFloat(newCommand[I]);
+                        }
                     }
                 break;
         }
