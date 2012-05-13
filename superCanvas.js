@@ -171,8 +171,9 @@ superCanvas.verticalLine2 = function(y){
 	return [this.cX[this.cX.length-1], y];
 };
 superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
-    var x1 = this.cX[this.cX.length-1];
-    var y1 = this.cY[this.cY.length-1];
+    var x1 = parseFloat(this.cX[this.cX.length-1]);
+    var y1 = parseFloat(this.cY[this.cY.length-1]);
+    console.log(x1, x2);
     theta *= (Math.PI/180)
     theta %= Math.PI*2;
     var mx = (x1-x2)/2;
