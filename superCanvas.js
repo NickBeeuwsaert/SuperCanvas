@@ -180,8 +180,8 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
     fS = parseFloat(fS);
     x2 = parseFloat(x2);
     y2 = parseFloat(y2);
-    console.log(x1, y1);
-    theta *= (Math.PI/180)
+
+    theta *= (Math.PI/180); // SVG spec says that the angle passed should be in degrees, so convert from that
     theta %= Math.PI*2;
     var mx = (x1-x2)/2;
     var my = (y1-y2)/2;
@@ -189,10 +189,11 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
     var My = (y1+y2)/2;
     x1p = cos(theta) * mx + sin(theta)*my;
     y1p =-sin(theta) * mx + cos(theta)*my;
-    //console.log("x1' "+ x1p, "y1' "+y1p);
+
     rx = Math.abs(rx);
     ry = Math.abs(ry);
     D = pow(x1p,2)/ pow(rx,2) + pow(y1p,2)/pow(ry,2);
+    //if D is greater than one, the radii won't fit the ellipse that starts at the specified points with the specified angle
     if (D > 1){
         rx = Math.sqrt(D)*rx;
         ry = Math.sqrt(D)*ry;
@@ -202,14 +203,12 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
     
     if(fS == fA){
         c= -c;
-        //c*= -1;
     }
     cxp = c;
     cyp = c;
-    //console.log("cxp initial: ", cxp);
+
     cxp *= (rx*y1p)/ry;
     cyp *= -((ry*x1p)/rx);
-    //console.log("cxp next: ", cxp);
     
     
     var cx = cos(theta)*cxp - sin(theta)*cyp;
@@ -239,10 +238,8 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
             r = 1;
         }
         var res = Math.acos(r);
-        //console.log("result of acos: "+ res+" numerator: "+toBe+" denominator: "+ orNot +" " + (toBe/orNot));
         return sign * res;
     }
-    //console.log("theta1", x1p,cxp, rx);
     var theta1 = getAngle([1, 0], [(x1p-cxp)/rx,(y1p-cyp)/ry]);
     var Dtheta = getAngle([(x1p-cxp)/rx,(y1p-cyp)/ry],[(-x1p-cxp)/rx,(-y1p-cyp)/ry] )%(Math.PI*2);
     if(fS == 0 && Dtheta > 0){
@@ -251,34 +248,17 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
         Dtheta += Math.PI*2;
     }
     var theta2 = Dtheta + theta1;
-    /*if(theta1 > theta2){
-        temp = theta1;
-        theta1 = theta2;
-        theta2 = temp;
-    }*/
-    var theta1D = (180 / Math.PI) * theta1;
-    var DthetaD = (180 / Math.PI) * Dtheta;
-    var theta2D = (180 / Math.PI) * theta2;
-    console.log("theta1: ",theta1D);
-    console.log("thetaD: ",DthetaD);
-    console.log("theta2: ",theta2D);
 
     var x = x1;
     var y = y2;
-    //var endX = cx + (cos(theta2)*rx*cos(theta) - sin(theta2)*ry*sin(theta));
-    //var endY = cy + (cos(theta2)*rx*sin(theta) + sin(theta2)*ry*cos(theta))
     for(var i = 0; i < Math.abs(Dtheta); i+=Math.PI/180){
 
         var I = theta1+(Dtheta<0?-1:1)*i;
-        //I = theta1 - I;
-        //if(fS==0)
-        //    I = theta2 - (Dtheta<0?-1:1)*i;
-        //I = i;//theta2 - Dtheta - i;
         x = cx + (cos(I)*rx*cos(theta) - sin(I)*ry*sin(theta));
         y = cy + (cos(I)*rx*sin(theta) + sin(I)*ry*cos(theta));
         this.lineTo(x, y);
     }
-    //this.lineTo(x2,y2);
+    this.lineTo(x2,y2);
     return [x2, y2];
 }};
 /**
