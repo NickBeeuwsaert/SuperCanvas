@@ -173,7 +173,14 @@ superCanvas.verticalLine2 = function(y){
 superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
     var x1 = parseFloat(this.cX[this.cX.length-1]);
     var y1 = parseFloat(this.cY[this.cY.length-1]);
-    console.log(x1, x2);
+    rx = parseFloat(rx);
+    ry = parseFloat(ry);
+    theta = parseFloat(theta);
+    fA = parseFloat(fA);
+    fS = parseFloat(fS);
+    x2 = parseFloat(x2);
+    y2 = parseFloat(y2);
+    console.log(x1, y1);
     theta *= (Math.PI/180)
     theta %= Math.PI*2;
     var mx = (x1-x2)/2;
@@ -243,47 +250,36 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
     }else if(fS == 1 && Dtheta < 0){
         Dtheta += Math.PI*2;
     }
-    //console.log(theta1, Dtheta);
-/*    context.beginPath();
-    context.moveTo(x1, y1);
-context.lineTo(cx, cy);
-context.lineTo(x2,y2);
-context.stroke();
-context.closePath();*/
-//context.beginPath();
-    var begin = theta1;
-    var end = theta1 + Dtheta;
-var i = theta1;
-    var a = (Math.PI/180);
+    var theta2 = Dtheta + theta1;
+    /*if(theta1 > theta2){
+        temp = theta1;
+        theta1 = theta2;
+        theta2 = temp;
+    }*/
+    var theta1D = (180 / Math.PI) * theta1;
+    var DthetaD = (180 / Math.PI) * Dtheta;
+    var theta2D = (180 / Math.PI) * theta2;
+    console.log("theta1: ",theta1D);
+    console.log("thetaD: ",DthetaD);
+    console.log("theta2: ",theta2D);
+
     var x = x1;
-    var y = y1;
-//for(var i = begin; i%Math.PI < end; i+=t*(Math.PI/180)){
-    var end = (theta1+Dtheta);
-    if(i > end){
-        i = theta1 + Dtheta;
-        end = theta1;
+    var y = y2;
+    //var endX = cx + (cos(theta2)*rx*cos(theta) - sin(theta2)*ry*sin(theta));
+    //var endY = cy + (cos(theta2)*rx*sin(theta) + sin(theta2)*ry*cos(theta))
+    for(var i = 0; i < Math.abs(Dtheta); i+=Math.PI/180){
+
+        var I = theta1+(Dtheta<0?-1:1)*i;
+        //I = theta1 - I;
+        //if(fS==0)
+        //    I = theta2 - (Dtheta<0?-1:1)*i;
+        //I = i;//theta2 - Dtheta - i;
+        x = cx + (cos(I)*rx*cos(theta) - sin(I)*ry*sin(theta));
+        y = cy + (cos(I)*rx*sin(theta) + sin(I)*ry*cos(theta));
+        this.lineTo(x, y);
     }
-    //console.log("angles!", i * (180/Math.PI),i < end?"<":">",end * (180/Math.PI));
-    while(i <= end){
-        i+= a;
-    //var x = rx * cos(i);
-    //var y = ry * sin(i);
-    var I = i;
-    if(fS==0){
-        I = end - I;
-    }
-    if(fA != 0 && fS != 0){
-        I += end;
-    }
-    x = cx + (cos(I)*rx*cos(theta) - sin(I)*ry*sin(theta));
-    y = cy + (cos(I)*rx*sin(theta) + sin(I)*ry*cos(theta));
-    context.lineTo(x,y);
-    //var nX = cos(theta)*x - sin(theta)*y;
-    //var nY = sin(theta)*x + cos(theta)*y;;
-}
-//context.stroke();
-//context.closePath();
-return [x2,y2]
+    //this.lineTo(x2,y2);
+    return [x2, y2];
 }};
 /**
  * @description skews the canvas on the X axis
