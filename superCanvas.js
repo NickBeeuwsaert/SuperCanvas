@@ -45,7 +45,7 @@ superCanvas.parsePath = function(d){
 	pathArr = [], i = 0;
 	for(i = 0; i!==splitPath.length; i++){
 	    //command = splitPath[i].match(/[\-0-9e]?([^ ,]+)/ig);
-	    command = splitPath[i].match(/([\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?|[mlhvcqtzsa])/ig);
+	    command = splitPath[i].match(/([\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?|[mlhvcqtzsa]+)/ig);
 	    //command = splitPath[i].match(/([\-0-9e])?([^ ,\-](e[\-])?)+/ig);
 	    //console.log(splitPath[i]);
 	    pathArr.push(command);
@@ -84,13 +84,15 @@ superCanvas.pathCommands = {
         'z': 'closePath2'};
 superCanvas.closePath2 = function(){
 	this.closePath();
-	return [0,0];
+    return [parseFloat(this.cX[this.cX.length-1]),parseFloat(this.cY[this.cY.length-1])];
+	//return [parseFloat(lastCommand[lastCommand.length-2]),parseFloat(lastCommand[lastCommand.length-1])];
 };
 superCanvas.line2 = function(x, y){ // haha! its a pun! 
 	this.lineTo(x, y);
     return [x, y];
 };
 superCanvas.move2 = function(x, y){
+    //this.beginPath();
 	this.moveTo(x, y);
     return [x, y];
 };
@@ -232,6 +234,8 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
         var toBe = u[0]*v[0] + u[1]*v[1];
         var orNot= norm(u)*norm(v);
         var r = toBe/orNot;
+        //correct for floating point errors
+        // stuff like 1.000000009 and all that
         if(r < -1){
             r = -1;
         }else if(r > 1){
@@ -427,8 +431,8 @@ superCanvas.normalizePath = function(pathD){
             lx = parseFloat(newCommand[newCommand.length-2]);
             ly = parseFloat(newCommand[newCommand.length-1]);
         }else{
-            lx =0;
-            ly =0;
+            lx =lx;
+            ly =ly;
         }
         //console.log(newCommand.toString());
         path.push(newCommand);
