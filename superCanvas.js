@@ -84,7 +84,7 @@ superCanvas.pathCommands = {
         'z': 'closePath2'};
 superCanvas.closePath2 = function(){
 	this.closePath();
-    return [parseFloat(this.cX[this.cX.length-1]),parseFloat(this.cY[this.cY.length-1])];
+    return [this.cX[this.cX.length-1],this.cY[this.cY.length-1]];
 	//return [parseFloat(lastCommand[lastCommand.length-2]),parseFloat(lastCommand[lastCommand.length-1])];
 };
 superCanvas.line2 = function(x, y){ // haha! its a pun! 
@@ -383,7 +383,10 @@ superCanvas.normalizePath = function(pathD){
         }
         
     }
+    beginning = true;
     pathD = P;
+    var iX = 0;
+    var iY = 0;
     for(i = 0; i<pathD.length; i++){
         command = pathD[i].slice();
         var newCommand = command;
@@ -417,7 +420,7 @@ superCanvas.normalizePath = function(pathD){
                     }
                 break;
         }
-        //console.log(newCommand[0]);
+        console.log(newCommand, pathD[i].slice());
         /*if(newCommand[0] === newCommand[0].toLowerCase()){
             newCommand[0] = newCommand[0].toUpperCase();
             var e = newCommand.length - 1;
@@ -427,12 +430,24 @@ superCanvas.normalizePath = function(pathD){
             }
                 
         }*/
+        //if(beginning){
+        //    iX = lx;
+        //    iY = ly;
+        //}
         if(newCommand[0].toLowerCase() !== 'z'){
             lx = parseFloat(newCommand[newCommand.length-2]);
             ly = parseFloat(newCommand[newCommand.length-1]);
+            //beginning= false;
+            if(beginning){
+                iX = lx;//iX;//pathD[0][pathD[0].length-2]; //parseFloat(newCommand[newCommand.length-2]);
+                iY = ly;//iY;//pathD[0][pathD[0].length-1]; //parseFloat(newCommand[newCommand.length-1]);
+                beginning = false;
+            }
         }else{
-            lx =lx;
-            ly =ly;
+            beginning = true;
+            lx = iX;
+            ly = iY;
+            //lx = 29.22557,ly = 1020.9375;
         }
         //console.log(newCommand.toString());
         path.push(newCommand);
