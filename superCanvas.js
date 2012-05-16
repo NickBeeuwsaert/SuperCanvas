@@ -298,7 +298,7 @@ superCanvas.pathLengths =
         'S': 4,
         'Q': 4,
         'T': 2,
-        'A': 8};
+        'A': 7};
 /**
  * @description draws a path created with superCanvas.parsePath
  * @param dArr the path to draw. Can be either a SVG path or a array created with SuperCanvas.parsePath
