@@ -420,7 +420,6 @@ superCanvas.normalizePath = function(pathD){
                     }
                 break;
         }
-        console.log(newCommand, pathD[i].slice());
         /*if(newCommand[0] === newCommand[0].toLowerCase()){
             newCommand[0] = newCommand[0].toUpperCase();
             var e = newCommand.length - 1;
