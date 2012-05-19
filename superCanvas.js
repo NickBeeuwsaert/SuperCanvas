@@ -172,7 +172,8 @@ superCanvas.verticalLine2 = function(y){
 	this.line2(this.cX[this.cX.length-1], this.cY[this.cY.length-1]);
 	return [this.cX[this.cX.length-1], y];
 };
-superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
+superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){
+    if(rx == 0 || ry == 0) {return this.line2(x2,y2);}
     var x1 = parseFloat(this.cX[this.cX.length-1]);
     var y1 = parseFloat(this.cY[this.cY.length-1]);
     rx = parseFloat(rx);
@@ -189,19 +190,19 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
     var my = (y1-y2)/2;
     var Mx = (x1+x2)/2;
     var My = (y1+y2)/2;
-    x1p = cos(theta) * mx + sin(theta)*my;
-    y1p =-sin(theta) * mx + cos(theta)*my;
+    x1p = Math.cos(theta) * mx + Math.sin(theta)*my;
+    y1p =-Math.sin(theta) * mx + Math.cos(theta)*my;
 
     rx = Math.abs(rx);
     ry = Math.abs(ry);
-    D = pow(x1p,2)/ pow(rx,2) + pow(y1p,2)/pow(ry,2);
+    D = Math.pow(x1p,2)/ Math.pow(rx,2) + Math.pow(y1p,2)/Math.pow(ry,2);
     //if D is greater than one, the radii won't fit the ellipse that starts at the specified points with the specified angle
     if (D > 1){
         rx = Math.sqrt(D)*rx;
         ry = Math.sqrt(D)*ry;
     }
-    var c = Math.sqrt(Math.abs((pow(rx,2)*pow(ry, 2) - pow(rx,2)*pow(y1p,2) - pow(ry,2)*pow(x1p,2))/
-              (pow(rx,2)*pow(y1p,2) + pow(ry,2)*pow(x1p,2))));
+    var c = Math.sqrt(Math.abs((Math.pow(rx,2)*Math.pow(ry, 2) - Math.pow(rx,2)*Math.pow(y1p,2) - Math.pow(ry,2)*Math.pow(x1p,2))/
+              (Math.pow(rx,2)*Math.pow(y1p,2) + Math.pow(ry,2)*Math.pow(x1p,2))));
     
     if(fS == fA){
         c= -c;
@@ -213,8 +214,8 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
     cyp *= -((ry*x1p)/rx);
     
     
-    var cx = cos(theta)*cxp - sin(theta)*cyp;
-    var cy = sin(theta)*cxp + cos(theta)*cyp;
+    var cx = Math.cos(theta)*cxp - Math.sin(theta)*cyp;
+    var cy = Math.sin(theta)*cxp + Math.cos(theta)*cyp;
     cx += Mx;
     cy += My;
 
@@ -258,13 +259,13 @@ superCanvas.eArc = function( rx, ry, theta, fA, fS, x2,y2){with(Math){
     for(var i = 0; i < Math.abs(Dtheta); i+=Math.PI/180){
 
         var I = theta1+(Dtheta<0?-1:1)*i;
-        x = cx + (cos(I)*rx*cos(theta) - sin(I)*ry*sin(theta));
-        y = cy + (cos(I)*rx*sin(theta) + sin(I)*ry*cos(theta));
+        x = cx + (Math.cos(I)*rx*Math.cos(theta) - Math.sin(I)*ry*Math.sin(theta));
+        y = cy + (Math.cos(I)*rx*Math.sin(theta) + Math.sin(I)*ry*Math.cos(theta));
         this.lineTo(x, y);
     }
     this.lineTo(x2,y2);
     return [x2, y2];
-}};
+};
 /**
  * @description skews the canvas on the X axis
  * @param radians the amount of radians to skew the X axis on
