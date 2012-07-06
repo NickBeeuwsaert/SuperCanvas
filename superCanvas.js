@@ -486,3 +486,6 @@ superCanvas.resizeImage = function(imageElement, w, h){
     }
     return image;
 };
+if(!(typeof window === "object" && this === window)){
+	module.exports = {'superCanvas': superCanvas};
+}

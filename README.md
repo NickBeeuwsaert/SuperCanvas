@@ -9,6 +9,13 @@ WELL! SuperCanvas is:
  *  Just plain cool!  
 
 So yeah! what are you waiting for? Check it out, and file bugs, because I hate finding bugs myself!  
+
+Using in Node.js
+----------------
+SuperCanvas can be used in node.js, with node-canvas installed, so as long you don't use any of the resizing functions
+
+
+
 [DOCUMENTATION][docs]  
 [SAMPLES][samps]
 
