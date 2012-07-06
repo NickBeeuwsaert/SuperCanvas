@@ -1,0 +1,42 @@
+<canvas width="1500" height="1352">
+</canvas>
+<script src="superCanvas.js"></script>
+<script>
+canvas = document.querySelector("canvas");
+ctx = superCanvas(canvas);
+//ctx.translate(250,100);
+ctx.beginPath();
+//delete ctx.pathCommands.A;
+var strPaths = "M 125,75 a100,50 0 0,0 100,50M 225,75 a100,50 0 0,1 100,50M 225,175 a100,50 0 1,0 100,50M 125,175 a100,50 0 1,1 100,50";
+paths = [];
+var d = 4;
+//strPaths = strPaths.replace(/z/gi, "");
+console.log(strPaths);
+theWholeThing = ctx.parsePath(strPaths);
+
+//ctx.scale(0.10,0.10);
+
+//ctx.translate(50, 50);
+ctx.drawPath(theWholeThing);
+console.log(theWholeThing);
+//ctx.drawPath(theWholeThing);
+//ctx.fill();
+ctx.stroke();
+/*for(var i = 0; i < strPaths.length; i++){
+	paths.push(ctx.parsePath(strPaths[i]+"z"));
+}
+console.log(strPaths[d]);
+// for(var i = 0; i < paths.length; i++)
+ctx.drawPath(paths[d]);
+console.log(paths[d]);
+ctx.fill();
+ctx.closePath();
+ctx.globalCompositeOperation = "xor";
+for(var index = 0; index < paths[d].length; index++){
+	var cmd = paths[d][index].slice().reverse();
+	y=cmd[0];
+	x=cmd[1];
+
+	ctx.fillText(paths[d][index].join(' '), x ,y);
+}*/
+</script>

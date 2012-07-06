@@ -391,6 +391,9 @@ superCanvas.normalizePath = function(pathD){
     for(i = 0; i<pathD.length; i++){
         command = pathD[i].slice();
         var newCommand = command;
+	for(var index = 0; index < pathD[i].length; index++){
+		pathD[i][index] = parseFloat(pathD[i][index]);
+	}
         switch(command[0]){
                 case 'H':
                 case 'h':
