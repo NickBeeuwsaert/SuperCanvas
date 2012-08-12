@@ -292,6 +292,93 @@ superCanvas.skew = function(radiansX, radiansY){
     this.transform(1,Math.tan(radiansY), Math.tan(radiansX), 1, 0, 0);
 
 };
+superCanvas.Matrix = function(a,b,c,d,e,f){
+    var t = {};
+
+    t.m11 = a||1;
+    t.m21 = b||0;
+    
+
+    t.m12 = c||0;
+    t.m22 = d||1;
+
+    t.m13 = e||0;
+    t.m23 = f||0;
+
+    t.m31 = 0;
+    t.m32 = 0;
+    t.m33 = 1;
+
+    t.transform = function(a,b,c,d,e,f){
+        var m = superCanvas.Matrix(a,b,c,d,e,f);
+        var m11, m21, m12, m22, m13,m23;
+        m11 = t.m11 * m.m11 + t.m12 * m.m21 + t.m13 * m.m31;
+        m21 = t.m21 * m.m11 + t.m22 * m.m21 + t.m23 * m.m31;
+        
+        m12 = t.m11 * m.m12 + t.m12 * m.m22 + t.m13 * m.m32;
+        m22 = t.m21 * m.m12 + t.m22 * m.m22 + t.m23 * m.m32;
+        
+        m13 = t.m11 * m.m13 + t.m12 * m.m23 + t.m13 * m.m33;
+        m23 = t.m21 * m.m13 + t.m22 * m.m23 + t.m23 * m.m33;
+        
+        t.m11 = m11;
+        t.m21 = m21;
+        
+        t.m12 = m12;
+        t.m22 = m22;
+        
+        t.m13 = m13;
+        t.m23 = m23;
+
+        
+    };
+    t.rotate = function(theta){
+        var a = Math.cos(theta);
+        var b = Math.sin(theta);
+        var c = -Math.sin(theta);
+        var d = Math.cos(theta);
+        var e = 0, f = 0;
+        t.transform(a,b,c,d,e,f);
+    };
+    t.skewX = function(x){
+        t.transform(1,0,Math.tan(x),1,0,0);
+    };
+    t.skewY = function(y){
+        t.transform(1,Math.tan(y),0,1,0,0);
+    };
+    t.skew = function(x, y){
+        t.transform(1,Math.tan(y),Math.tan(x),1,0,0);
+    };
+    t.translate = function(x, y){
+        t.transform(1,0,0,1,x,y);
+    };
+    t.scale = function(x, y){
+        t.transform(x,0,0,y,0,0);
+    };
+    t.apply = function(x, y){
+        // a c e
+        // b d f
+        var X = x * t.m11 + y * t.m12 + 1 * t.m13;
+        var Y = x * t.m21 + y * t.m22 + 1 * t.m23;
+        return [X,Y];
+    };
+    return t;
+};
+superCanvas.bakeMatrixIntoPath = function(matrix, path){
+    var newPath = [];
+    /*if(typeof(path) != "object"){
+        path = superCanvas.parsePath(path);
+    }*/
+    for(var i = 0; i < path.length; i++){
+        var cmd = [path[i][0]];
+        for(var I = 0; I<path[i].length/2-1;I++){
+            cmd = cmd.concat(M.apply(path[i][I*2+1], path[i][I*2+2]));
+        }
+        newPath.push(cmd);
+    }
+    //console.log(newPath);
+    return newPath;
+};
 superCanvas.pathLengths = 
        {'L': 2,
         'M': 2,
