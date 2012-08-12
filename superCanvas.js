@@ -295,19 +295,7 @@ superCanvas.skew = function(radiansX, radiansY){
 superCanvas.Matrix = function(a,b,c,d,e,f){
     var t = {};
 
-    t.m11 = a||1;
-    t.m21 = b||0;
-    
 
-    t.m12 = c||0;
-    t.m22 = d||1;
-
-    t.m13 = e||0;
-    t.m23 = f||0;
-
-    t.m31 = 0;
-    t.m32 = 0;
-    t.m33 = 1;
 
     t.transform = function(a,b,c,d,e,f){
         var m = superCanvas.Matrix(a,b,c,d,e,f);
@@ -352,27 +340,54 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
     t.translate = function(x, y){
         t.transform(1,0,0,1,x,y);
     };
+    t.setTransform = function(a,b,c,d,e,f){
+        t.m11 = a;
+        t.m21 = b;
+        
+
+        t.m12 = c;
+        t.m22 = d;
+
+        t.m13 = e;
+        t.m23 = f;
+
+        t.m31 = 0;
+        t.m32 = 0;
+        t.m33 = 1;
+    };
+    t.resetTransform = function(){
+        t.setTransform(1,0,0,1,0,0);
+    }
     t.scale = function(x, y){
         t.transform(x,0,0,y,0,0);
     };
-    t.apply = function(x, y){
-        // a c e
-        // b d f
+    t.bake = function(x, y){
+        // [ a c e ]   [x]
+        // [ b d f ] * [y]
+        // [ 0 0 1 ]   [z]
         var X = x * t.m11 + y * t.m12 + 1 * t.m13;
         var Y = x * t.m21 + y * t.m22 + 1 * t.m23;
         return [X,Y];
     };
+    t.setTransform(a||1,b||0,c||0,d||1,e||0,f||0);
     return t;
 };
 superCanvas.bakeMatrixIntoPath = function(matrix, path){
     var newPath = [];
-    /*if(typeof(path) != "object"){
+    if(typeof(path) == "string"){
         path = superCanvas.parsePath(path);
-    }*/
+    }
     for(var i = 0; i < path.length; i++){
         var cmd = [path[i][0]];
-        for(var I = 0; I<path[i].length/2-1;I++){
-            cmd = cmd.concat(M.apply(path[i][I*2+1], path[i][I*2+2]));
+        if(cmd[0] == 'A'){
+            // I *think* that some transform should be applied the the arcs x and y radius, but I don't know how to do that
+            coords = matrix.bake(path[i][path[i].length-2], path[i][path[i].length-1]);
+            cmd = cmd.concat(path[i].slice(1,-2), coords);
+
+        }else{
+            for(var I = 0; I<path[i].length/2-1;I++){
+                cmd = cmd.concat(matrix.bake(path[i][I*2+1], path[i][I*2+2]));
+            }
         }
         newPath.push(cmd);
     }
