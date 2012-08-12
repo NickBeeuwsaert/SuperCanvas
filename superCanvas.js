@@ -359,6 +359,7 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
         t.setTransform(1,0,0,1,0,0);
     }
     t.scale = function(x, y){
+        console.log(x, y);
         t.transform(x,0,0,y,0,0);
     };
     t.bake = function(x, y){
