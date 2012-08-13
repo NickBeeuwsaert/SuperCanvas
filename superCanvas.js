@@ -339,6 +339,8 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
     };
     t.translate = function(x, y){
         t.transform(1,0,0,1,x,y);
+        //t.m13 += x;
+        //t.m23 += y;
     };
     t.setTransform = function(a,b,c,d,e,f){
         t.m11 = a;
@@ -355,12 +357,18 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
         t.m32 = 0;
         t.m33 = 1;
     };
+    t.toString = function(){
+        return [[t.m11, t.m12, t.m13],
+                [t.m21, t.m22, t.m23],
+                [t.m31, t.m32, t.m33]].join('\n');
+    };
     t.resetTransform = function(){
         t.setTransform(1,0,0,1,0,0);
-    }
+    };
     t.scale = function(x, y){
-        console.log(x, y);
-        t.transform(x,0,0,y,0,0);
+        //t.transform(x,0,0,y,0,0);
+        t.m11 *= x;
+        t.m22 *= y;
     };
     t.bake = function(x, y){
         // [ a c e ]   [x]
@@ -395,6 +403,64 @@ superCanvas.bakeMatrixIntoPath = function(matrix, path){
     //console.log(newPath);
     return newPath;
 };
+superCanvas.splitSubPaths = function(path){
+        if(typeof(path) == "string"){
+            path = superCanvas.parsePath(path);
+        }
+        var lPathStart = 0;
+        var subPaths = [];
+        var i;
+        for(i = 0; i < path.length; i++){
+            if(pPath[i][0].toLowerCase() == 'z'){
+                subPaths.push(path.slice(lPathStart, i));
+                lPathStart = i;
+            }
+        }
+        if(lPathStart != i){
+                subPaths.push(path.slice(lPathStart, i));
+        }
+        return subPaths;
+}
+superCanvas.reversePath = function(thePath){
+        if(typeof(thePath) == "string"){
+            thePath = superCanvas.parsePath(thePath);
+        }
+        var newPath = [];
+        var i;
+        subPaths = superCanvas.splitSubPaths(thePath);
+        for(i = 0; i < subPaths.length; i++){
+            var path = subPaths[i];
+            if(path[path.length-1][0].toLowerCase() == 'z'){
+                path.pop();
+            }
+            lastCmd = path.slice(-1)[0];
+            coords = lastCmd.slice(-2);
+            newPath.push([].concat('M', coords[0], coords[1]));
+            for(var I = path.length-2; I >= 0; I--){
+                var previousCmd = path[I+1];
+                var thisCmd = path[I];
+                var newcmd = [];
+                endCoords = thisCmd.slice(-2);
+                /*if(previousCmd[0] == 'L'){
+                    newcmd.push('L', endCoords[0], endCoords[1]);
+                }else if(previousCmd[0] == 'Q'){
+                    controlPoints = previousCmd.slice(1,3);
+                    console.log(controlPoints);
+                    newcmd.push('Q', controlPoints[0], controlPoints[1], endCoords[0], endCoords[1]);
+                }*/
+                if(previousCmd[0] == 'C'){
+                    var cp1 = previousCmd.slice(1, 3);
+                    var cp2 = previousCmd.slice(3,5);
+                    newcmd = ['C'].concat(cp2, cp1);
+                }else{
+                    newcmd = previousCmd.slice(0,-2);
+                }
+                newcmd.push(endCoords[0], endCoords[1]);
+                newPath.push(newcmd);
+            }
+        }
+        return newPath;
+    };
 superCanvas.pathLengths = 
        {'L': 2,
         'M': 2,
