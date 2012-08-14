@@ -292,11 +292,29 @@ superCanvas.skew = function(radiansX, radiansY){
     this.transform(1,Math.tan(radiansY), Math.tan(radiansX), 1, 0, 0);
 
 };
+/**
+ * @description a matrix class
+ * @param [a] m11, defaults to 1
+ * @param [b] m21, defaults to 0
+ * @param [c] m12, defaults to 0
+ * @param [d] m22, defaults to 1
+ * @param [e] m13, defaults to 0
+ * @param [f] m23, defaults to 0
+ */
 superCanvas.Matrix = function(a,b,c,d,e,f){
     var t = {};
 
 
-
+    /**
+     * @description multiplies the matrix by the given areguments 
+     * @param a m11
+     * @param b m21
+     * @param c m12
+     * @param d m22
+     * @param e m13
+     * @param f m23
+     * @returns this instance of the superCanvas.Matrix
+     */
     t.transform = function(a,b,c,d,e,f){
         var m = superCanvas.Matrix(a,b,c,d,e,f);
         var m11, m21, m12, m22, m13,m23;
@@ -317,9 +335,14 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
         
         t.m13 = m13;
         t.m23 = m23;
-
+        return t;
         
     };
+    /**
+     * @description rotates the matrix by theta degrees
+     * @param theta radians to rotate the matrix
+     * @returns this instance of the superCanvas.Matrix
+     */
     t.rotate = function(theta){
         var a = Math.cos(theta);
         var b = Math.sin(theta);
@@ -327,21 +350,58 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
         var d = Math.cos(theta);
         var e = 0, f = 0;
         t.transform(a,b,c,d,e,f);
+        return t;
     };
+    /**
+     * @description skews the matrix on the X axis
+     * @param x amount to skew the matrix
+     * @returns this instance of the superCanvas.Matrix
+     */
     t.skewX = function(x){
         t.transform(1,0,Math.tan(x),1,0,0);
+        return t;
     };
+    /**
+     * @description skews the matrix on the Y axis
+     * @param y amount to skew
+     * @returns this instance of the superCanvas.Matrix
+     */
     t.skewY = function(y){
         t.transform(1,Math.tan(y),0,1,0,0);
+        return t;
     };
+    /** 
+     * @description skews in both axis
+     * @param x amount to skew on the X axis
+     * @param y amount to skew on the Y axis
+     * @returns this instance of the superCanvas.Matrix
+     */
     t.skew = function(x, y){
         t.transform(1,Math.tan(y),Math.tan(x),1,0,0);
+        return t;
     };
+    /**
+     * @description translates the matrix
+     * @param x amount to translate in the X axis
+     * @param y amount to translate in the Y axis
+     * @returns this instance of the superCanvas.Matrix
+     */
     t.translate = function(x, y){
         t.transform(1,0,0,1,x,y);
         //t.m13 += x;
         //t.m23 += y;
+        return t;
     };
+    /**
+     * @description sets the transformation matrix to the values specified by a,b,c,d,e and f
+     * @param a m11
+     * @param b m21
+     * @param c m12
+     * @param d m22
+     * @param e m13
+     * @param f m23
+     * @returns this instance of the superCanvas.Matrix
+     */
     t.setTransform = function(a,b,c,d,e,f){
         t.m11 = a;
         t.m21 = b;
@@ -356,24 +416,45 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
         t.m31 = 0;
         t.m32 = 0;
         t.m33 = 1;
+        return t;
     };
+    /**
+     * @description creates a string representation of the matrix
+     */
     t.toString = function(){
         return [[t.m11, t.m12, t.m13],
                 [t.m21, t.m22, t.m23],
                 [t.m31, t.m32, t.m33]].join('\n');
     };
+    /**
+     * @description sets the transformation matrix to 1,0,0,1,0,0
+     * @returns this instance of the superCanvas.Matrix
+     */
     t.resetTransform = function(){
         t.setTransform(1,0,0,1,0,0);
+        return t;
     };
+    /**
+     * @description scales the matrix
+     * @param x amount to scale the X axis
+     * @param y amount to scale the Y axis
+     * @returns this instance of the superCanvas.Matrix
+     */
     t.scale = function(x, y){
         //t.transform(x,0,0,y,0,0);
         t.m11 *= x;
         t.m22 *= y;
+        return t;
     };
+    /**
+     * @description multiplies the matrix by the coordinates provided
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
     t.bake = function(x, y){
         // [ a c e ]   [x]
         // [ b d f ] * [y]
-        // [ 0 0 1 ]   [z]
+        // [ 0 0 1 ]   [1]
         var X = x * t.m11 + y * t.m12 + 1 * t.m13;
         var Y = x * t.m21 + y * t.m22 + 1 * t.m23;
         return [X,Y];
@@ -381,6 +462,12 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
     t.setTransform(a||1,b||0,c||0,d||1,e||0,f||0);
     return t;
 };
+/**
+ * @description bakes the matrix into the path
+ * @param {SuperCanvas.Matrix} matrix the matrix to use
+ * @param {String|Array} the path to bake into
+ * @returns {Array} the new path, with the matrix applied
+ */
 superCanvas.bakeMatrixIntoPath = function(matrix, path){
     var newPath = [];
     if(typeof(path) == "string"){
@@ -403,6 +490,11 @@ superCanvas.bakeMatrixIntoPath = function(matrix, path){
     //console.log(newPath);
     return newPath;
 };
+/**
+ * @description gets all subpaths in the SVG path
+ * @param {String|Array} path the path to split
+ * @returns {Array} array of arrays with the paths
+ */
 superCanvas.splitSubPaths = function(path){
         if(typeof(path) == "string"){
             path = superCanvas.parsePath(path);
@@ -421,6 +513,11 @@ superCanvas.splitSubPaths = function(path){
         }
         return subPaths;
 }
+/**
+ * @description reverses the SVG path provided
+ * @param {String|Array} thePath the path to reverse
+ * @returns {Array} the newly reversed path
+ */
 superCanvas.reversePath = function(thePath){
         if(typeof(thePath) == "string"){
             thePath = superCanvas.parsePath(thePath);
@@ -469,15 +566,20 @@ superCanvas.pathLengths =
         'Q': 4,
         'T': 2,
         'A': 7};
+superCanvas.defaultMatrix = superCanvas.Matrix();
 /**
  * @description draws a path created with superCanvas.parsePath
  * @param dArr the path to draw. Can be either a SVG path or a array created with SuperCanvas.parsePath
+ * @param [matrix] the matrix to apply to the path
  * @memberOf superCanvas#
 */
-superCanvas.drawPath = function(dArr){
+superCanvas.drawPath = function(dArr, matrix){
 	if(typeof(dArr) === "string"){
-		dArr = this.parsePath(dArr);
+		dArr = superCanvas.parsePath(dArr);
 	}
+    matrix = matrix || superCanvas.defaultMatrix;
+    //dArr = superCanvas.bakeMatrixIntoPath(matrix, path);
+    //console.log(matrix+"");
 	this.cX = [];
 	this.cY = [];
 	this.currentPath = [];
@@ -485,7 +587,7 @@ superCanvas.drawPath = function(dArr){
 	var d = dArr.slice(0),
     centerX=0, centerY=0, i;
 	for(i = 0; i!==d.length; i++){
-        var c = d[i].slice(0);
+        var c = superCanvas.bakeMatrixIntoPath(matrix, [d[i].slice(0)])[0];
 		this.currentPath.push(c.slice());
 		command = c.shift();
 		//while(this.pathLengths[command.toUpperCase()] <= c.length){
