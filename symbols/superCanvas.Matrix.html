@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
-		<title>superCanvas | JsDoc Reference</title>
+		<title>superCanvas.Matrix | JsDoc Reference</title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 		<meta name="mobileoptimized" content="0" />
@@ -62,12 +62,12 @@
 			<header>
 				<h1 class="classTitle">
 					
-					Class <span>superCanvas</span>
+					Class <span>superCanvas.Matrix</span>
 				</h1>
 				
 				<div class="intro">
 					<p class="description summary">
-						Construct a new superCanvas Instance
+						Matrices! Weeee!
 					</p>
 						
 					
@@ -86,7 +86,7 @@
 			
 				<section>
 					<div class="props">
-						<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class superCanvas.">
+						<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class superCanvas.Matrix.">
 							<caption class="sectionTitle">Class Summary</caption>
 							<thead>
 								<tr>
@@ -99,9 +99,9 @@
 									<td class="attributes">&nbsp;</td>
 									<td class="nameDescription" >
 										<div class="fixedFont">
-											<b><a href="../symbols/superCanvas.html#constructor">superCanvas</a></b>(el)
+											<b><a href="../symbols/superCanvas.Matrix.html#constructor">superCanvas.Matrix</a></b>(a, b, c, d, e, f)
 										</div>
-										<div class="description">wooo!</div>
+										<div class="description">a matrix class</div>
 									</td>
 								</tr>
 							</tbody>
@@ -110,42 +110,6 @@
 				</section>
 			
 			
-			
-				
-				<section>
-					
-						<nav>
-							<div class="props">
-								<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class superCanvas.">
-									<caption class="sectionTitle">Field Summary</caption>
-									
-									<thead>
-										<tr>
-											<th scope="col">Field Attributes</th>
-											<th scope="col">Field Name and Description</th>
-										</tr>
-									</thead>
-									
-									<tbody>
-										
-											<tr>
-												<td class="attributes">&lt;static&gt; &nbsp;</td>
-												<td class="nameDescription">
-													<div class="fixedFont">
-													superCanvas.<b><a href="../symbols/superCanvas.html#.pathCommands">pathCommands</a></b>
-													</div>
-													<div class="description">maps different SVG path commands to superCanva commands</div>
-												</td>
-											</tr>
-										
-									</tbody>
-								</table>
-							</div>
-						</nav>
-					
-					
-					
-				</section>
 			
 	<!--
 	#### METHODS SUMMARY
@@ -159,7 +123,7 @@
 						
 						
 							<nav>
-								<table class="summaryTable" id="MethodsList" cellspacing="0" summary="A summary of the methods documented in the class superCanvas.">
+								<table class="summaryTable" id="MethodsList" cellspacing="0" summary="A summary of the methods documented in the class superCanvas.Matrix.">
 									<thead>
 										<tr>
 											<th scope="col">Method Attributes</th>
@@ -175,9 +139,9 @@
 											>
 												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont">superCanvas.<b><a href="../symbols/superCanvas.html#.bakeMatrixIntoPath">bakeMatrixIntoPath</a></b>(matrix, path)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.bake">bake</a></b>(x, y)
 													</div>
-													<div class="description">bakes the matrix into the path</div>
+													<div class="description">multiplies the matrix by the coordinates provided</div>
 												</td>
 											</tr>
 										
@@ -186,9 +150,9 @@
 											>
 												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont">superCanvas.<b><a href="../symbols/superCanvas.html#.normalizePath">normalizePath</a></b>(pathD)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.resetTransform">resetTransform</a></b>()
 													</div>
-													<div class="description">normalized a path (remove Horizontal and Vertical commands, uncompacts commands, and makes everything absolute)</div>
+													<div class="description">sets the transformation matrix to 1,0,0,1,0,0</div>
 												</td>
 											</tr>
 										
@@ -197,9 +161,9 @@
 											>
 												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont">superCanvas.<b><a href="../symbols/superCanvas.html#.parsePath">parsePath</a></b>(d)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.rotate">rotate</a></b>(theta)
 													</div>
-													<div class="description">parses the SVG path for use</div>
+													<div class="description">rotates the matrix by theta degrees</div>
 												</td>
 											</tr>
 										
@@ -208,9 +172,9 @@
 											>
 												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont">superCanvas.<b><a href="../symbols/superCanvas.html#.resizeImage">resizeImage</a></b>(imageElement, w, h)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.scale">scale</a></b>(x, y)
 													</div>
-													<div class="description">resize a Image, Canvas or Video Element without blurring (at time of writng, chrome can't do this with CSS)</div>
+													<div class="description">scales the matrix</div>
 												</td>
 											</tr>
 										
@@ -219,9 +183,9 @@
 											>
 												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont">superCanvas.<b><a href="../symbols/superCanvas.html#.reversePath">reversePath</a></b>(thePath)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.setTransform">setTransform</a></b>(a, b, c, d, e, f)
 													</div>
-													<div class="description">reverses the SVG path provided</div>
+													<div class="description">sets the transformation matrix to the values specified by a,b,c,d,e and f</div>
 												</td>
 											</tr>
 										
@@ -230,64 +194,64 @@
 											>
 												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont">superCanvas.<b><a href="../symbols/superCanvas.html#.splitSubPaths">splitSubPaths</a></b>(path)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.skew">skew</a></b>(x, y)
 													</div>
-													<div class="description">gets all subpaths in the SVG path</div>
+													<div class="description">skews in both axis</div>
 												</td>
 											</tr>
 										
 											<tr
 												 class='item6'
 											>
-												<td class="attributes">&nbsp;</td>
+												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont"><b><a href="../symbols/superCanvas.html#superCanvas.drawPath">superCanvas.drawPath</a></b>(dArr, matrix)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.skewX">skewX</a></b>(x)
 													</div>
-													<div class="description">draws a path created with superCanvas.parsePath</div>
+													<div class="description">skews the matrix on the X axis</div>
 												</td>
 											</tr>
 										
 											<tr
 												 class='item7'
 											>
-												<td class="attributes">&nbsp;</td>
+												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont"><b><a href="../symbols/superCanvas.html#superCanvas.fillTextU">superCanvas.fillTextU</a></b>(text, x, y, maxWidth)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.skewY">skewY</a></b>(y)
 													</div>
-													<div class="description">just fills text in upside down, really only useful if you are trying to debug SVG font glyphs</div>
+													<div class="description">skews the matrix on the Y axis</div>
 												</td>
 											</tr>
 										
 											<tr
 												 class='item8'
 											>
-												<td class="attributes">&nbsp;</td>
+												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont"><b><a href="../symbols/superCanvas.html#superCanvas.skew">superCanvas.skew</a></b>(radiansX, radiansY)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.toString">toString</a></b>()
 													</div>
-													<div class="description">skews the canvas on the X and Y axis</div>
+													<div class="description">creates a string representation of the matrix</div>
 												</td>
 											</tr>
 										
 											<tr
 												 class='item9'
 											>
-												<td class="attributes">&nbsp;</td>
+												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont"><b><a href="../symbols/superCanvas.html#superCanvas.skewX">superCanvas.skewX</a></b>(radians)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.transform">transform</a></b>(a, b, c, d, e, f)
 													</div>
-													<div class="description">skews the canvas on the X axis</div>
+													<div class="description">multiplies the matrix by the given areguments</div>
 												</td>
 											</tr>
 										
 											<tr
 												 class='item10'
 											>
-												<td class="attributes">&nbsp;</td>
+												<td class="attributes">&lt;static&gt; &nbsp;</td>
 												<td class="nameDescription">
-													<div class="fixedFont"><b><a href="../symbols/superCanvas.html#superCanvas.skewY">superCanvas.skewY</a></b>(radians)
+													<div class="fixedFont">superCanvas.Matrix.<b><a href="../symbols/superCanvas.Matrix.html#.translate">translate</a></b>(x, y)
 													</div>
-													<div class="description">skews the canvas on the Y axis</div>
+													<div class="description">translates the matrix</div>
 												</td>
 											</tr>
 										
@@ -317,11 +281,11 @@
 							</h2>
 							
 							<div class="fixedFont">
-								<b>superCanvas</b>(el)
+								<b>superCanvas.Matrix</b>(a, b, c, d, e, f)
 							</div>
 							
 							<div class="description">
-								wooo!
+								a matrix class
 								
 							</div>
 							
@@ -332,10 +296,40 @@
 									<dt class="heading">Parameters:</dt>
 									
 										<dt>
-											 <b>el</b>
-											
+											 <b>a</b>
+											<i>Optional</i>
 										</dt>
-										<dd>reference to the canvas element to use for the context</dd>
+										<dd>m11, defaults to 1</dd>
+									
+										<dt>
+											 <b>b</b>
+											<i>Optional</i>
+										</dt>
+										<dd>m21, defaults to 0</dd>
+									
+										<dt>
+											 <b>c</b>
+											<i>Optional</i>
+										</dt>
+										<dd>m12, defaults to 0</dd>
+									
+										<dt>
+											 <b>d</b>
+											<i>Optional</i>
+										</dt>
+										<dd>m22, defaults to 1</dd>
+									
+										<dt>
+											 <b>e</b>
+											<i>Optional</i>
+										</dt>
+										<dd>m13, defaults to 0</dd>
+									
+										<dt>
+											 <b>f</b>
+											<i>Optional</i>
+										</dt>
+										<dd>m23, defaults to 0</dd>
 									
 								</dl>
 							
@@ -348,40 +342,6 @@
 	<!--
 	#### FIELD DETAILS
 	-->
-			
-				<section>
-					<div class="details props">
-						<div class="innerProps">
-							<h2 class="sectionTitle">
-								Field Detail
-							</h2>
-							
-							
-								<div class="fixedFont heading" id=".pathCommands">
-									<span class='lighter'>
-									&lt;static&gt; 
-									</span>
-									
-									
-									
-									<span class="light">superCanvas.</span><b>pathCommands</b>							
-								</div>
-								
-								<div class="description">
-									maps different SVG path commands to superCanva commands
-									
-									
-									
-								</div>
-								
-								
-									
-								
-								
-							
-						</div>
-					</div>
-				</section>
 			
 	<!--
 	#### METHOD DETAILS
@@ -400,18 +360,18 @@
 									<li 
 										 class='item0'
 									>
-										<div class="fixedFont heading" id=".bakeMatrixIntoPath">
+										<div class="fixedFont heading" id=".bake">
 											<span class='lighter'>
 											&lt;static&gt; 
 											</span>
 											
-											<span class="light">{Array}</span>
 											
-											<span class="light">superCanvas.</span><b>bakeMatrixIntoPath</b>(matrix, path)
+											
+											<span class="light">superCanvas.Matrix.</span><b>bake</b>(x, y)
 										</div>
 										
 										<div class="description">
-											bakes the matrix into the path
+											multiplies the matrix by the coordinates provided
 											
 											
 											
@@ -425,18 +385,47 @@
 												<dt class="heading">Parameters:</dt>
 												
 													<dt>
-														<span class="light fixedFont">{SuperCanvas.Matrix}</span> <b>matrix</b>
+														<b>x</b>
 														
 													</dt>
-													<dd>the matrix to use</dd>
+													<dd>the x coordinate</dd>
 												
 													<dt>
-														<span class="light fixedFont">{String|Array}</span> <b>path</b>
+														<b>y</b>
 														
 													</dt>
-													<dd>path to bake into</dd>
+													<dd>the y coordinate</dd>
 												
 											</dl>
+										
+										
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item1'
+									>
+										<div class="fixedFont heading" id=".resetTransform">
+											<span class='lighter'>
+											&lt;static&gt; 
+											</span>
+											
+											
+											
+											<span class="light">superCanvas.Matrix.</span><b>resetTransform</b>()
+										</div>
+										
+										<div class="description">
+											sets the transformation matrix to 1,0,0,1,0,0
+											
+											
+											
+											
+										</div>
+										
+										
+										
 										
 										
 										
@@ -451,7 +440,7 @@
 												
 													<dt class="heading">Returns:</dt>
 													
-														<dd><span class="light fixedFont">{Array}</span> the new path, with the matrix applied</dd>
+														<dd>this instance of the superCanvas.Matrix</dd>
 													
 												
 												
@@ -460,46 +449,6 @@
 												
 											
 											</dl>
-										
-										<div class="hr"></div>
-									</li>
-								
-									<li 
-										 class='item1'
-									>
-										<div class="fixedFont heading" id=".normalizePath">
-											<span class='lighter'>
-											&lt;static&gt; 
-											</span>
-											
-											
-											
-											<span class="light">superCanvas.</span><b>normalizePath</b>(pathD)
-										</div>
-										
-										<div class="description">
-											normalized a path (remove Horizontal and Vertical commands, uncompacts commands, and makes everything absolute)
-											
-											
-											
-											
-										</div>
-										
-										
-										
-										
-											<dl class="detailList params">
-												<dt class="heading">Parameters:</dt>
-												
-													<dt>
-														<b>pathD</b>
-														
-													</dt>
-													<dd>the path data to normalize</dd>
-												
-											</dl>
-										
-										
 										
 										<div class="hr"></div>
 									</li>
@@ -507,18 +456,18 @@
 									<li 
 										 class='item2'
 									>
-										<div class="fixedFont heading" id=".parsePath">
+										<div class="fixedFont heading" id=".rotate">
 											<span class='lighter'>
 											&lt;static&gt; 
 											</span>
 											
-											<span class="light">{Array[]}</span>
 											
-											<span class="light">superCanvas.</span><b>parsePath</b>(d)
+											
+											<span class="light">superCanvas.Matrix.</span><b>rotate</b>(theta)
 										</div>
 										
 										<div class="description">
-											parses the SVG path for use
+											rotates the matrix by theta degrees
 											
 											
 											
@@ -532,10 +481,10 @@
 												<dt class="heading">Parameters:</dt>
 												
 													<dt>
-														<span class="light fixedFont">{String}</span> <b>d</b>
+														<b>theta</b>
 														
 													</dt>
-													<dd>the path to process</dd>
+													<dd>radians to rotate the matrix</dd>
 												
 											</dl>
 										
@@ -552,7 +501,7 @@
 												
 													<dt class="heading">Returns:</dt>
 													
-														<dd><span class="light fixedFont">{Array[]}</span> A 2D array of SVG commands</dd>
+														<dd>this instance of the superCanvas.Matrix</dd>
 													
 												
 												
@@ -568,18 +517,18 @@
 									<li 
 										 class='item3'
 									>
-										<div class="fixedFont heading" id=".resizeImage">
+										<div class="fixedFont heading" id=".scale">
 											<span class='lighter'>
 											&lt;static&gt; 
 											</span>
 											
 											
 											
-											<span class="light">superCanvas.</span><b>resizeImage</b>(imageElement, w, h)
+											<span class="light">superCanvas.Matrix.</span><b>scale</b>(x, y)
 										</div>
 										
 										<div class="description">
-											resize a Image, Canvas or Video Element without blurring (at time of writng, chrome can't do this with CSS)
+											scales the matrix
 											
 											
 											
@@ -593,62 +542,16 @@
 												<dt class="heading">Parameters:</dt>
 												
 													<dt>
-														<b>imageElement</b>
+														<b>x</b>
 														
 													</dt>
-													<dd>the Image, Canvas or Video Element to be scaled</dd>
+													<dd>amount to scale the X axis</dd>
 												
 													<dt>
-														<b>w</b>
+														<b>y</b>
 														
 													</dt>
-													<dd>the new width for the element</dd>
-												
-													<dt>
-														<b>h</b>
-														
-													</dt>
-													<dd>the new height for the element</dd>
-												
-											</dl>
-										
-										
-										
-										<div class="hr"></div>
-									</li>
-								
-									<li 
-										 class='item4'
-									>
-										<div class="fixedFont heading" id=".reversePath">
-											<span class='lighter'>
-											&lt;static&gt; 
-											</span>
-											
-											<span class="light">{Array}</span>
-											
-											<span class="light">superCanvas.</span><b>reversePath</b>(thePath)
-										</div>
-										
-										<div class="description">
-											reverses the SVG path provided
-											
-											
-											
-											
-										</div>
-										
-										
-										
-										
-											<dl class="detailList params">
-												<dt class="heading">Parameters:</dt>
-												
-													<dt>
-														<span class="light fixedFont">{String|Array}</span> <b>thePath</b>
-														
-													</dt>
-													<dd>the path to reverse</dd>
+													<dd>amount to scale the Y axis</dd>
 												
 											</dl>
 										
@@ -665,7 +568,98 @@
 												
 													<dt class="heading">Returns:</dt>
 													
-														<dd><span class="light fixedFont">{Array}</span> the newly reversed path</dd>
+														<dd>this instance of the superCanvas.Matrix</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
+										
+										<div class="hr"></div>
+									</li>
+								
+									<li 
+										 class='item4'
+									>
+										<div class="fixedFont heading" id=".setTransform">
+											<span class='lighter'>
+											&lt;static&gt; 
+											</span>
+											
+											
+											
+											<span class="light">superCanvas.Matrix.</span><b>setTransform</b>(a, b, c, d, e, f)
+										</div>
+										
+										<div class="description">
+											sets the transformation matrix to the values specified by a,b,c,d,e and f
+											
+											
+											
+											
+										</div>
+										
+										
+										
+										
+											<dl class="detailList params">
+												<dt class="heading">Parameters:</dt>
+												
+													<dt>
+														<b>a</b>
+														
+													</dt>
+													<dd>m11</dd>
+												
+													<dt>
+														<b>b</b>
+														
+													</dt>
+													<dd>m21</dd>
+												
+													<dt>
+														<b>c</b>
+														
+													</dt>
+													<dd>m12</dd>
+												
+													<dt>
+														<b>d</b>
+														
+													</dt>
+													<dd>m22</dd>
+												
+													<dt>
+														<b>e</b>
+														
+													</dt>
+													<dd>m13</dd>
+												
+													<dt>
+														<b>f</b>
+														
+													</dt>
+													<dd>m23</dd>
+												
+											</dl>
+										
+										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd>this instance of the superCanvas.Matrix</dd>
 													
 												
 												
@@ -681,18 +675,18 @@
 									<li 
 										 class='item5'
 									>
-										<div class="fixedFont heading" id=".splitSubPaths">
+										<div class="fixedFont heading" id=".skew">
 											<span class='lighter'>
 											&lt;static&gt; 
 											</span>
 											
-											<span class="light">{Array}</span>
 											
-											<span class="light">superCanvas.</span><b>splitSubPaths</b>(path)
+											
+											<span class="light">superCanvas.Matrix.</span><b>skew</b>(x, y)
 										</div>
 										
 										<div class="description">
-											gets all subpaths in the SVG path
+											skews in both axis
 											
 											
 											
@@ -706,10 +700,16 @@
 												<dt class="heading">Parameters:</dt>
 												
 													<dt>
-														<span class="light fixedFont">{String|Array}</span> <b>path</b>
+														<b>x</b>
 														
 													</dt>
-													<dd>the path to split</dd>
+													<dd>amount to skew on the X axis</dd>
+												
+													<dt>
+														<b>y</b>
+														
+													</dt>
+													<dd>amount to skew on the Y axis</dd>
 												
 											</dl>
 										
@@ -726,7 +726,7 @@
 												
 													<dt class="heading">Returns:</dt>
 													
-														<dd><span class="light fixedFont">{Array}</span> array of arrays with the paths</dd>
+														<dd>this instance of the superCanvas.Matrix</dd>
 													
 												
 												
@@ -742,18 +742,18 @@
 									<li 
 										 class='item6'
 									>
-										<div class="fixedFont heading" id="superCanvas.drawPath">
+										<div class="fixedFont heading" id=".skewX">
 											<span class='lighter'>
-											
+											&lt;static&gt; 
 											</span>
 											
 											
 											
-											<b>superCanvas.drawPath</b>(dArr, matrix)
+											<span class="light">superCanvas.Matrix.</span><b>skewX</b>(x)
 										</div>
 										
 										<div class="description">
-											draws a path created with superCanvas.parsePath
+											skews the matrix on the X axis
 											
 											
 											
@@ -767,20 +767,35 @@
 												<dt class="heading">Parameters:</dt>
 												
 													<dt>
-														<b>dArr</b>
+														<b>x</b>
 														
 													</dt>
-													<dd>the path to draw. Can be either a SVG path or a array created with SuperCanvas.parsePath</dd>
-												
-													<dt>
-														<b>matrix</b>
-														<i>Optional</i>
-													</dt>
-													<dd>the matrix to apply to the path</dd>
+													<dd>amount to skew the matrix</dd>
 												
 											</dl>
 										
 										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd>this instance of the superCanvas.Matrix</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
 										
 										<div class="hr"></div>
 									</li>
@@ -788,18 +803,18 @@
 									<li 
 										 class='item7'
 									>
-										<div class="fixedFont heading" id="superCanvas.fillTextU">
+										<div class="fixedFont heading" id=".skewY">
 											<span class='lighter'>
-											
+											&lt;static&gt; 
 											</span>
 											
 											
 											
-											<b>superCanvas.fillTextU</b>(text, x, y, maxWidth)
+											<span class="light">superCanvas.Matrix.</span><b>skewY</b>(y)
 										</div>
 										
 										<div class="description">
-											just fills text in upside down, really only useful if you are trying to debug SVG font glyphs
+											skews the matrix on the Y axis
 											
 											
 											
@@ -813,32 +828,35 @@
 												<dt class="heading">Parameters:</dt>
 												
 													<dt>
-														<b>text</b>
-														
-													</dt>
-													<dd>the string to fill</dd>
-												
-													<dt>
-														<b>x</b>
-														
-													</dt>
-													<dd>the x coordinate for the text</dd>
-												
-													<dt>
 														<b>y</b>
 														
 													</dt>
-													<dd>the y coordinate for the text</dd>
-												
-													<dt>
-														<b>maxWidth</b>
-														
-													</dt>
-													<dd>the maximum width for the text</dd>
+													<dd>amount to skew</dd>
 												
 											</dl>
 										
 										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd>this instance of the superCanvas.Matrix</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
 										
 										<div class="hr"></div>
 									</li>
@@ -846,18 +864,18 @@
 									<li 
 										 class='item8'
 									>
-										<div class="fixedFont heading" id="superCanvas.skew">
+										<div class="fixedFont heading" id=".toString">
 											<span class='lighter'>
-											
+											&lt;static&gt; 
 											</span>
 											
 											
 											
-											<b>superCanvas.skew</b>(radiansX, radiansY)
+											<span class="light">superCanvas.Matrix.</span><b>toString</b>()
 										</div>
 										
 										<div class="description">
-											skews the canvas on the X and Y axis
+											creates a string representation of the matrix
 											
 											
 											
@@ -866,23 +884,6 @@
 										
 										
 										
-										
-											<dl class="detailList params">
-												<dt class="heading">Parameters:</dt>
-												
-													<dt>
-														<b>radiansX</b>
-														
-													</dt>
-													<dd>how many radians to skew on the X axis</dd>
-												
-													<dt>
-														<b>radiansY</b>
-														
-													</dt>
-													<dd>how many radians to skew on the Y axis</dd>
-												
-											</dl>
 										
 										
 										
@@ -892,18 +893,18 @@
 									<li 
 										 class='item9'
 									>
-										<div class="fixedFont heading" id="superCanvas.skewX">
+										<div class="fixedFont heading" id=".transform">
 											<span class='lighter'>
-											
+											&lt;static&gt; 
 											</span>
 											
 											
 											
-											<b>superCanvas.skewX</b>(radians)
+											<span class="light">superCanvas.Matrix.</span><b>transform</b>(a, b, c, d, e, f)
 										</div>
 										
 										<div class="description">
-											skews the canvas on the X axis
+											multiplies the matrix by the given areguments
 											
 											
 											
@@ -917,14 +918,65 @@
 												<dt class="heading">Parameters:</dt>
 												
 													<dt>
-														<b>radians</b>
+														<b>a</b>
 														
 													</dt>
-													<dd>the amount of radians to skew the X axis on</dd>
+													<dd>m11</dd>
+												
+													<dt>
+														<b>b</b>
+														
+													</dt>
+													<dd>m21</dd>
+												
+													<dt>
+														<b>c</b>
+														
+													</dt>
+													<dd>m12</dd>
+												
+													<dt>
+														<b>d</b>
+														
+													</dt>
+													<dd>m22</dd>
+												
+													<dt>
+														<b>e</b>
+														
+													</dt>
+													<dd>m13</dd>
+												
+													<dt>
+														<b>f</b>
+														
+													</dt>
+													<dd>m23</dd>
 												
 											</dl>
 										
 										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd>this instance of the superCanvas.Matrix</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
 										
 										<div class="hr"></div>
 									</li>
@@ -932,18 +984,18 @@
 									<li 
 										 class='item10'
 									>
-										<div class="fixedFont heading" id="superCanvas.skewY">
+										<div class="fixedFont heading" id=".translate">
 											<span class='lighter'>
-											
+											&lt;static&gt; 
 											</span>
 											
 											
 											
-											<b>superCanvas.skewY</b>(radians)
+											<span class="light">superCanvas.Matrix.</span><b>translate</b>(x, y)
 										</div>
 										
 										<div class="description">
-											skews the canvas on the Y axis
+											translates the matrix
 											
 											
 											
@@ -957,14 +1009,41 @@
 												<dt class="heading">Parameters:</dt>
 												
 													<dt>
-														<b>radians</b>
+														<b>x</b>
 														
 													</dt>
-													<dd>the amount of radians to skew the Y axis on</dd>
+													<dd>amount to translate in the X axis</dd>
+												
+													<dt>
+														<b>y</b>
+														
+													</dt>
+													<dd>amount to translate in the Y axis</dd>
 												
 											</dl>
 										
 										
+										
+											<dl class="detailList nomargin">
+											
+												
+												
+												
+												
+												
+												
+												
+													<dt class="heading">Returns:</dt>
+													
+														<dd>this instance of the superCanvas.Matrix</dd>
+													
+												
+												
+												
+												
+												
+											
+											</dl>
 										
 										
 									</li>
