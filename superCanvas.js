@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with SuperCanvas.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @namespace 
+ * @description wooo!
  * @class Construct a new superCanvas Instance
  * @constructor
  * @param el reference to the canvas element to use for the context
@@ -294,6 +294,7 @@ superCanvas.skew = function(radiansX, radiansY){
 };
 /**
  * @description a matrix class
+ * @class Matrices! Weeee!
  * @param [a] m11, defaults to 1
  * @param [b] m21, defaults to 0
  * @param [c] m12, defaults to 0
@@ -307,6 +308,7 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
 
     /**
      * @description multiplies the matrix by the given areguments 
+     * @memberOf superCanvas.Matrix
      * @param a m11
      * @param b m21
      * @param c m12
@@ -315,7 +317,7 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
      * @param f m23
      * @returns this instance of the superCanvas.Matrix
      */
-    t.transform = function(a,b,c,d,e,f){
+    transform = function(a,b,c,d,e,f){
         var m = superCanvas.Matrix(a,b,c,d,e,f);
         var m11, m21, m12, m22, m13,m23;
         m11 = t.m11 * m.m11 + t.m12 * m.m21 + t.m13 * m.m31;
@@ -340,10 +342,11 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
     };
     /**
      * @description rotates the matrix by theta degrees
+     * @memberOf superCanvas.Matrix
      * @param theta radians to rotate the matrix
      * @returns this instance of the superCanvas.Matrix
      */
-    t.rotate = function(theta){
+    rotate = function(theta){
         var a = Math.cos(theta);
         var b = Math.sin(theta);
         var c = -Math.sin(theta);
@@ -354,39 +357,43 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
     };
     /**
      * @description skews the matrix on the X axis
+     * @memberOf superCanvas.Matrix
      * @param x amount to skew the matrix
      * @returns this instance of the superCanvas.Matrix
      */
-    t.skewX = function(x){
+    skewX = function(x){
         t.transform(1,0,Math.tan(x),1,0,0);
         return t;
     };
     /**
      * @description skews the matrix on the Y axis
+     * @memberOf superCanvas.Matrix
      * @param y amount to skew
      * @returns this instance of the superCanvas.Matrix
      */
-    t.skewY = function(y){
+    skewY = function(y){
         t.transform(1,Math.tan(y),0,1,0,0);
         return t;
     };
     /** 
      * @description skews in both axis
+     * @memberOf superCanvas.Matrix
      * @param x amount to skew on the X axis
      * @param y amount to skew on the Y axis
      * @returns this instance of the superCanvas.Matrix
      */
-    t.skew = function(x, y){
+    skew = function(x, y){
         t.transform(1,Math.tan(y),Math.tan(x),1,0,0);
         return t;
     };
     /**
      * @description translates the matrix
+     * @memberOf superCanvas.Matrix
      * @param x amount to translate in the X axis
      * @param y amount to translate in the Y axis
      * @returns this instance of the superCanvas.Matrix
      */
-    t.translate = function(x, y){
+    translate = function(x, y){
         t.transform(1,0,0,1,x,y);
         //t.m13 += x;
         //t.m23 += y;
@@ -394,6 +401,7 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
     };
     /**
      * @description sets the transformation matrix to the values specified by a,b,c,d,e and f
+     * @memberOf superCanvas.Matrix
      * @param a m11
      * @param b m21
      * @param c m12
@@ -402,7 +410,7 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
      * @param f m23
      * @returns this instance of the superCanvas.Matrix
      */
-    t.setTransform = function(a,b,c,d,e,f){
+    setTransform = function(a,b,c,d,e,f){
         t.m11 = a;
         t.m21 = b;
         
@@ -420,38 +428,42 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
     };
     /**
      * @description creates a string representation of the matrix
+     * @memberOf superCanvas.Matrix
      */
-    t.toString = function(){
+    toString = function(){
         return [[t.m11, t.m12, t.m13],
                 [t.m21, t.m22, t.m23],
                 [t.m31, t.m32, t.m33]].join('\n');
     };
     /**
      * @description sets the transformation matrix to 1,0,0,1,0,0
+     * @memberOf superCanvas.Matrix
      * @returns this instance of the superCanvas.Matrix
      */
-    t.resetTransform = function(){
+    resetTransform = function(){
         t.setTransform(1,0,0,1,0,0);
         return t;
     };
     /**
      * @description scales the matrix
+     * @memberOf superCanvas.Matrix
      * @param x amount to scale the X axis
      * @param y amount to scale the Y axis
      * @returns this instance of the superCanvas.Matrix
      */
-    t.scale = function(x, y){
+    scale = function(x, y){
         //t.transform(x,0,0,y,0,0);
         t.m11 *= x;
         t.m22 *= y;
         return t;
     };
     /**
+     * @memberOf superCanvas.Matrix
      * @description multiplies the matrix by the coordinates provided
      * @param x the x coordinate
      * @param y the y coordinate
      */
-    t.bake = function(x, y){
+    bake = function(x, y){
         // [ a c e ]   [x]
         // [ b d f ] * [y]
         // [ 0 0 1 ]   [1]
@@ -459,13 +471,24 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
         var Y = x * t.m21 + y * t.m22 + 1 * t.m23;
         return [X,Y];
     };
+    t.rotate = rotate;
+    t.bake = bake;
+    t.scale = scale;
+    t.resetTransform = resetTransform;
+    t.toString = toString;
+    t.setTransform = setTransform;
+    t.translate = translate;
+    t.skew = skew;
+    t.skewX = skewX;
+    t.skewY = skewY;
+    t.transform = transform
     t.setTransform(a||1,b||0,c||0,d||1,e||0,f||0);
     return t;
 };
 /**
  * @description bakes the matrix into the path
  * @param {SuperCanvas.Matrix} matrix the matrix to use
- * @param {String|Array} the path to bake into
+ * @param {String|Array} path path to bake into
  * @returns {Array} the new path, with the matrix applied
  */
 superCanvas.bakeMatrixIntoPath = function(matrix, path){
