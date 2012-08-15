@@ -487,7 +487,7 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
 };
 /**
  * @description bakes the matrix into the path
- * @param {SuperCanvas.Matrix} matrix the matrix to use
+ * @param {superCanvas.Matrix} matrix the matrix to use
  * @param {String|Array} path path to bake into
  * @returns {Array} the new path, with the matrix applied
  */
@@ -526,7 +526,7 @@ superCanvas.splitSubPaths = function(path){
         var subPaths = [];
         var i;
         for(i = 0; i < path.length; i++){
-            if(pPath[i][0].toLowerCase() == 'z'){
+            if(path[i][0].toLowerCase() == 'z'){
                 subPaths.push(path.slice(lPathStart, i));
                 lPathStart = i;
             }
@@ -593,7 +593,7 @@ superCanvas.defaultMatrix = superCanvas.Matrix();
 /**
  * @description draws a path created with superCanvas.parsePath
  * @param dArr the path to draw. Can be either a SVG path or a array created with SuperCanvas.parsePath
- * @param [matrix] the matrix to apply to the path
+ * @param {superCanvas.Matrix} [matrix] the matrix to apply to the path
  * @memberOf superCanvas#
 */
 superCanvas.drawPath = function(dArr, matrix){
