@@ -344,15 +344,23 @@ superCanvas.Matrix = function(a,b,c,d,e,f){
      * @description rotates the matrix by theta degrees
      * @memberOf superCanvas.Matrix
      * @param theta radians to rotate the matrix
+     * @param [cx] the X axis of the rotation center
+     * @param [cx] the Y axis of the rotation center
      * @returns this instance of the superCanvas.Matrix
      */
-    rotate = function(theta){
+    rotate = function(theta, cx, cy){
         var a = Math.cos(theta);
         var b = Math.sin(theta);
         var c = -Math.sin(theta);
         var d = Math.cos(theta);
         var e = 0, f = 0;
+        if(cx && cy){
+            t.translate(cx,cy);
+        }
         t.transform(a,b,c,d,e,f);
+        if(cx && cy){
+            t.translate(-cx,-cy);
+        }
         return t;
     };
     /**
@@ -531,7 +539,8 @@ superCanvas.splitSubPaths = function(path){
                 lPathStart = i;
             }
         }
-        if(lPathStart != i){
+        //console.log(lPathStart, i);
+        if(lPathStart != i-1){
                 subPaths.push(path.slice(lPathStart, i));
         }
         return subPaths;
@@ -548,12 +557,14 @@ superCanvas.reversePath = function(thePath){
         var newPath = [];
         var i;
         subPaths = superCanvas.splitSubPaths(thePath);
+        //console.log(subPaths);
         for(i = 0; i < subPaths.length; i++){
             var path = subPaths[i];
+            //console.log(path);
             if(path[path.length-1][0].toLowerCase() == 'z'){
                 path.pop();
             }
-            lastCmd = path.slice(-1)[0];
+            lastCmd = path[path.length-1];//path.slice(-1)[0];
             coords = lastCmd.slice(-2);
             newPath.push([].concat('M', coords[0], coords[1]));
             for(var I = path.length-2; I >= 0; I--){
