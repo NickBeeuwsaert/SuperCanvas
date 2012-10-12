@@ -82,6 +82,58 @@ superCanvas.pathCommands = {
         'A': 'eArc',
         'Z': 'closePath2',
         'z': 'closePath2'};
+/**
+ * @description Gets the slope of a cubic bezier at a point t, this is a utility function, you shouldn't need to use it
+ * @param a the first point of the bezier curve
+ * @param b the second point of the bezier curve
+ * @param c the third point of the bezier curve
+ * @param t the the point at which to get the slope, in the range [0,1]
+ * @returns the slope at point t
+ */
+superCanvas.bezierQuadraticDerivativeSlope = function(a,b,c,t){
+    return (-2-2*t)*a + (2-4*t)*b + c*t*2;
+};
+superCanvas.bezierQuadraticFunction = function(a,b,c,t){
+    return Math.pow(1-t,2)*a+2*(1-t)*t*b+Math.pow(t,2)*c;
+};
+superCanvas.bezierCubicFunction = function(a,b,c,d,t){
+    return Math.pow(1-t, 3)*a+3*Math.pow(1-t,2)*t*b +3 *(1-t)*Math.pow(t,2)*c + Math.pow(t,3)*d;
+};
+/**
+ * @description Same as above, but for cubic bezier curves (FUN FACT: when deriving this, the equation go so long, it wouldn't fit on one sheet of paper)
+ * @param a control point #1
+ * @param b control point #2
+ * @param c control point #3
+ * @param d control point #4
+ * @returns the slope at point t
+ */
+superCanvas.bezierCubicDerivativeSlope = function(a,b,c,d, t){
+    // This can probably be simplified, but SHUT UP
+    return (-3*a*Math.pow(1-t,2))+((3*Math.pow(1-t,2)*b) + t*b*(-6+6*t))+((3-3*t)*(2*t*c)+(Math.pow(t,2)*c)*-3)+3*d*Math.pow(t,2);
+}
+superCanvas.getCubicDerivativeSlope = function(p0, p1, p2, p3, t, angle){
+    var dy = superCanvas.bezierCubicDerivativeSlope(p0[1], p1[1], p2[1], p3[1], t);
+    var dx = superCanvas.bezierCubicDerivativeSlope(p0[0], p1[0], p2[0], p3[0], t);
+    if(angle)
+        return Math.atan2(dy,dx);
+    else
+        return dy/dx;
+}
+/**
+ * @description Gets the slope of a cubic bezier curve at t. this function will probably have name revisions...
+ * @param p0 An array of two points, specifying the coordinates of p0(the start anchor point)
+ * @param p1 An array of two points, specifying the coordinates of p1(the control point)
+ * @param p2 An array of two points, specifying the coordinates of p2(the end anchor point)
+ * @param [angle] a boolena value specifying whether to return the in radians(true), or slope(false)
+ */
+superCanvas.getQuadraticSlope = function(p0, p1, p2, t, angle){
+    var dy = superCanvas.bezierQuadraticDerivativeSlope(p0[1],p1[1],p2[1], t);
+    var dx = superCanvas.bezierQuadraticDerivativeSlope(p0[0],p1[0],p2[0], t);
+    if(angle)
+        return Math.atan2(dy,dx);
+    else
+        return dy/dx;
+};
 superCanvas.closePath2 = function(){
 	this.closePath();
     return [this.cX[this.cX.length-1],this.cY[this.cY.length-1]];
@@ -96,6 +148,7 @@ superCanvas.move2 = function(x, y){
 	this.moveTo(x, y);
     return [x, y];
 };
+
 superCanvas.bezierCurve2 = function(cp1x, cp1y, cp2x, cp2y, x,y){
 	this.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
     return [x, y];
