@@ -91,7 +91,7 @@ superCanvas.pathCommands = {
  * @returns the slope at point t
  */
 superCanvas.bezierQuadraticDerivativeSlope = function(a,b,c,t){
-    return (-2-2*t)*a + (2-4*t)*b + c*t*2;
+    return (-2+2*t)*a + (2-4*t)*b + c*t*2;
 };
 superCanvas.bezierQuadraticFunction = function(a,b,c,t){
     return Math.pow(1-t,2)*a+2*(1-t)*t*b+Math.pow(t,2)*c;
