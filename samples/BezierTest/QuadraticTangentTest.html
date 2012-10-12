@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bezier Slopes test!</title>
+<script src="https://raw.github.com/r4z0rw0lf/SuperCanvas/master/superCanvas.js"></script>
+</head>
+<body>
+    <canvas width="500" height="500">
+    </canvas>
+    <br>
+
+    <script>
+        var canvas = document.querySelector("canvas");
+        var context = superCanvas(canvas);;
+
+        var path = [];
+        path.push(["L", 250, 0]);
+        path.push(["L", 50, 500]);
+        path.push(["Q", 100, 450, 250, 450]);
+
+        path = path.concat(superCanvas.reversePath(superCanvas.bakeMatrixIntoPath(superCanvas.Matrix().translate(500,0).scale(-1, 1), path)));
+        path = superCanvas.bakeMatrixIntoPath(superCanvas.Matrix().scale(50/500, 50/500).rotate(Math.PI/2).translate(-250,-250), path);
+
+        var p0 = [0, 25];
+        var p1 = [400,25];
+        var p2 = [450, 500-25];
+
+        var draw = function(t){
+            canvas.width+=0;
+            var x = superCanvas.bezierQuadraticFunction(p0[0],p1[0],p2[0], t);
+            var y = superCanvas.bezierQuadraticFunction(p0[1],p1[1],p2[1], t);
+            var angle = superCanvas.getQuadraticSlope(p0, p1, p2, t, true);
+
+            context.beginPath();
+            context.moveTo(p0[0],p0[1]);
+            context.lineTo(p1[0],p1[1]);
+            context.lineTo(p2[0],p2[1]);
+            context.stroke();
+            context.closePath();
+
+            context.fillRect(x-2.5,y-2.5,5,5);
+            context.beginPath();
+            context.moveTo(p0[0], p0[1]);
+            context.quadraticCurveTo(p1[0], p1[1], p2[0], p2[1]);
+
+            context.stroke();
+            context.closePath();
+
+            context.beginPath();
+            context.drawPath(path, superCanvas.Matrix().translate(x,y).rotate(angle));
+            context.stroke();
+            context.closePath();
+        };
+        draw(0);
+        var go = function(){
+            var t = 0;
+            function a(){
+                draw(t);
+                if(t > 1)
+                    t=0;
+                setTimeout(a, 1000/60)
+                t+=0.01;
+            };
+            a();
+        };
+        go();
+    </script>
+</body>
+</html>
