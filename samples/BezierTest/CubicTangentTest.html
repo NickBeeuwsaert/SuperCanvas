@@ -8,6 +8,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 </style>
 </head>
@@ -19,7 +20,7 @@ html, body {
             return Math.sqrt(Math.pow(y1-y2,2)+Math.pow(x1-x2,2));
         };
         var canvas = document.querySelector("canvas");
-        var context = superCanvas(canvas);;
+        var context = superCanvas(canvas);
 
         var path = [];
         path.push(["L", 250, 0]);
@@ -35,10 +36,32 @@ html, body {
         var p3 = [500-10, 500-25];
         var points = [p0, p1, p2, p3];
         var draw = function(t){
-            canvas.width+=0;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            //canvas.width+=0;
+            context.webkitImageSmoothingEnabled = false;
+            context.mozImageSmoothingEnabled = false;
+
+            context.lineWidth=5;
+            context.beginPath();
+            context.moveTo(p0[0], p0[1]);
+            context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
+
+            context.stroke();
+            context.closePath();
+
+            context.lineWidth = 1;
+            context.strokeStyle="#4f80ff";
             var x = superCanvas.bezierCubicFunction(p0[0],p1[0],p2[0],p3[0], t);
             var y = superCanvas.bezierCubicFunction(p0[1],p1[1],p2[1],p3[1], t);
             var angle = superCanvas.getCubicDerivativeSlope(p0, p1, p2, p3, t, true);
+
+            context.beginPath();
+            context.moveTo(p0[0], p0[1]);
+            context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
+
+            context.stroke();
+            context.closePath();
 
             context.beginPath();
             context.moveTo(p0[0],p0[1]);
@@ -48,22 +71,18 @@ html, body {
             context.lineTo(p3[0],p3[1]);
             context.stroke();
             context.closePath();
-            context.fillRect(p0[0]-2.5, p0[1]-2.5 ,5, 5);
-            context.fillRect(p1[0]-2.5, p1[1]-2.5 ,5, 5);
-            context.fillRect(p2[0]-2.5, p2[1]-2.5 ,5, 5);
-            context.fillRect(p3[0]-2.5, p3[1]-2.5 ,5, 5);
 
+            for(var i = 0; i < points.length; i++){
+                context.fillStyle=!(i==1 || i == 2)?"white":"#4f80ff";
+                context.strokeRect(points[i][0]-2.5, points[i][1]-2.5 ,5, 5);
+                context.fillRect(points[i][0]-2.5, points[i][1]-2.5 ,5, 5);
+            }
             context.fillRect(x-2.5,y-2.5,5,5);
-            context.beginPath();
-            context.moveTo(p0[0], p0[1]);
-            context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
-
-            context.stroke();
-            context.closePath();
-
+            context.fillStyle="rgba("+[0x4F, 0x80, 0xFF, 0.5].join(',')+")"; //"#4f80ff";
             context.beginPath();
             context.drawPath(path, superCanvas.Matrix().translate(x,y).rotate(angle));
             context.stroke();
+            context.fill();
             context.closePath();
         };
         var mousedown = false;
@@ -75,7 +94,7 @@ html, body {
             pointIndex = false;
             for(var i = 0; i < points.length; i++){
                 var d = distance(points[i][0],points[i][1], x,y);
-                console.log(d);
+                //console.log(d);
                 if(d < 6){
                     pointIndex = i;
                 }
@@ -96,11 +115,12 @@ html, body {
         var go = function(){
             var t = 0;
             function a(){
-                draw(t);
-                if(t > 1)
-                    t=0;
+                draw(Math.abs(1-(t%2)));
+                console.log()
+                /*if(t > 1)
+                    t=0;*/
                 setTimeout(a, 1000/60)
-                t+=0.01;
+                t+=0.005;
             };
             a();
         };
