@@ -10,18 +10,40 @@ html, body {
     padding: 0;
     overflow: hidden;
 }
+form {
+    position: absolute;
+    overflow: hidden;
+    bottom: 0;
+    right: 0;
+    margin-left: -30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: hsla(0, 0%, 70%, 0.5);
+    border: 1px solid hsla(0, 0%, 70%, 1);
+    border-radius: 10px;
+    padding: 5px;
+}
+form div div {
+    clear: both;
+    width:60px;display:inline-block;
+}
 </style>
 </head>
 <body>
     <canvas width="500" height="500">
     </canvas>
+    <form>
+        <div><div><label for="bounce">Bounce: </label></div><input type="checkbox" id="bounce" name="bounce"/></div>
+        <div><div><label for="speed">Speed: </label></div><input type="range" id="speed" name="speed" min="0.001" max="0.03" step="0.001"/></div>
+    </form>
     <script>
         var distance = function(x1, y1, x2, y2){
             return Math.sqrt(Math.pow(y1-y2,2)+Math.pow(x1-x2,2));
         };
         var canvas = document.querySelector("canvas");
         var context = superCanvas(canvas);
-
+        var speed = document.querySelector("#speed");
+        var bounce = document.querySelector("#bounce");
         var path = [];
         path.push(["L", 250, 0]);
         path.push(["L", 50, 500]);
@@ -114,13 +136,19 @@ html, body {
         });
         var go = function(){
             var t = 0;
+            var d = 1;
             function a(){
-                draw(Math.abs(1-(t%2)));
-                console.log()
+                //t = bounce.checked?t%1:1-Math.abs((t%2)-1);
+                if(t > 1 || t < 0){
+                    d *= -1;
+                }
+                t = !bounce.checked?t%1:1-Math.abs((t%2)-1);
+                draw(t);
+                //console.log()
                 /*if(t > 1)
                     t=0;*/
                 setTimeout(a, 1000/60)
-                t+=0.005;
+                t+=parseFloat(speed.value)*d;
             };
             a();
         };
