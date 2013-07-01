@@ -192,7 +192,7 @@ superCanvas.quadraticCurve2 = function(cp1x, cp1y, x,y){
 // stupid smooth curves
 superCanvas.smoothQuadraticCurve2 = function(x,y){
                                  
-                                 var lastCommand = this.currentPath[this.currentPath.length-2];
+                                 var lastCommand = this.currentPath_sp[this.currentPath_sp.length-2];
                                  //console.log(lastCommand);
                                  var lastCPx = parseFloat(x),
                                      lastCPy = parseFloat(y),
@@ -221,7 +221,7 @@ superCanvas.smoothQuadraticCurve2 = function(x,y){
 };
 superCanvas.smoothCubicCurve2 = function(cpX, cpY, x,y){
 
-                                 var lastCommand = this.currentPath[this.currentPath.length-2];
+                                 var lastCommand = this.currentPath_sp[this.currentPath_sp.length-2];
                                  //console.log(lastCommand);
                                  var lastCPx = parseFloat(x),
                                      lastCPy = parseFloat(y),
@@ -699,13 +699,15 @@ superCanvas.drawPath = function(dArr, matrix){
     //console.log(matrix+"");
 	this.cX = [];
 	this.cY = [];
-	this.currentPath = [];
+	this.currentPath_sp = [];
 	this.lastCommand = '';
 	var d = dArr.slice(0),
     centerX=0, centerY=0, i;
+    console.log(this.currentPath_sp);
 	for(i = 0; i!==d.length; i++){
         var c = superCanvas.bakeMatrixIntoPath(matrix, [d[i].slice(0)])[0];
-		this.currentPath.push(c.slice());
+		console.log(this.currentPath_sp);
+        this.currentPath_sp.push(c.slice());
 		command = c.shift();
 		//while(this.pathLengths[command.toUpperCase()] <= c.length){
             //var cee = c.splice(0,this.pathLengths[command.toUpperCase()]);
