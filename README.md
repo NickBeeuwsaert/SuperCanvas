@@ -25,5 +25,5 @@ SuperCanvas can be used in node.js, with node-canvas installed, so as long you d
 
 
 
-[docs]: http://r4z0rw0lf.github.com/SuperCanvas
-[samps]: http://r4z0rw0lf.github.com/SuperCanvas/samples/index.html
+[docs]: http://NickBeeuwsaert.github.com/SuperCanvas
+[samps]: http://NickBeeuwsaert.github.com/SuperCanvas/samples/index.html
