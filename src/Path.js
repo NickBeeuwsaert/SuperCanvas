@@ -10,18 +10,6 @@
 })(this, function(){
     var Path = {};
 
-    Path.parsePath = function(d){
-        d = d.replace(/([mlhvcqtzsa])/ig, " $1 ");
-        var splitPath = d.match(/([mlhvcqtzsa][^mlhvcqtzsa]*)/ig),
-            pathArr = [], i = 0;
-        for(i = 0; i !== splitPath.length; i++){
-            command = splitPath[i].match(/([\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?|[mlhvcqtzsa]+)/ig);
-            pathArr.push(command);
-        }
-        //return pathArr;
-        return Path.normalizePath(pathArr.slice());
-    };
-
     Path.pathLengths = {
         'L': 2,
         'M': 2,
@@ -34,93 +22,34 @@
         'H': 1
     };
 
-    Path.normalizePath = function(pathD){
-        var path = [],
-        lx = 0, ly = 0, i;
-        var P = [];
+    Path.parsePath = function(d){
+        d = d.replace(/([mlhvcqtzsa])/ig, " $1 ");
+        var splitPath = d.match(/([mlhvcqtzsa][^mlhvcqtzsa]*)/ig),
+            pathArr = [], i = 0, j = 0;
+        for(i = 0; i !== splitPath.length; i++){
+            command = splitPath[i].match(/([\-]?(0|[1-9]\d*)(\.\d*)?([eE][+\-]?\d+)?|[mlhvcqtzsa]+)/ig);
+            pathArr.push(command);
+        }
+        //return pathArr;
+        var path = [];
+        for(i = 0; i < pathArr.length; i++) {
+            var segment = pathArr[i];
+            var command = segment.shift();
+            segment = segment.map(parseFloat);
 
-        for(i = 0; i < pathD.length; i++){
-            var command = pathD[i].slice();
-            var commandName = command.shift();
-            var uncompactedCommands = [];
+            var l = Path.pathLengths[command.toUpperCase()];
 
-            if(Path.pathLengths[commandName.toUpperCase()] < command.length){
-                //console.log("an atrocity has occurred: '%s': [%s]", commandName, command.toString());
-                while(command.length >= Path.pathLengths[commandName.toUpperCase()]){
-                    var coords = command.splice(0, Path.pathLengths[commandName.toUpperCase()]);
-                    coords.unshift(commandName);
-                    if(commandName.toUpperCase()=='M'){
-                        commandName = commandName.toUpperCase()==commandName?'L':'l';
-                    }
-                    [].push.call(uncompactedCommands, coords);
+            for (j = 0; j < segment.length; j += l) {
+                var s = segment.slice(j, j+l);
+                s.unshift(command);
+                path.push(s);
+
+                if(command.toUpperCase() == 'M') {
+                    command = command=='M'?'L':'l';
                 }
-
-                [].push.apply(P, uncompactedCommands);
-            } else {
-                P.push(pathD[i]);
-            }    
+            }
         }
 
-        beginning = true;
-        pathD = P;
-        var iX = 0;
-        var iY = 0;
-
-        for(i = 0; i<pathD.length; i++){
-            command = pathD[i].slice();
-            var newCommand = command;
-
-            for(var index = 1; index < pathD[i].length; index++){
-                newCommand[index] = parseFloat(newCommand[index]);
-            }
-
-            switch(command[0]){
-                case 'H':
-                case 'h':
-                    newCommand = ['L', (command[0]==='H'?0:lx)+parseFloat(command[1]), ly];
-                break;
-                case 'V':
-                case 'v':
-                    newCommand = ['L', lx, (command[0]==='V'?0:ly) + parseFloat(command[1])];
-                break;
-                case 'l':
-                case 'a':
-                case 'm':
-                case 'q':
-                case 's':
-                case 'c':
-                case 't':
-                    var I = 0;
-                    newCommand[0] = newCommand[0].toUpperCase();
-                    var LC = [lx,ly];
-                    if(newCommand[0] == 'A'){
-                        newCommand[newCommand.length -1] = LC[1] + parseFloat(newCommand[newCommand.length -1]);
-                        newCommand[newCommand.length -2] = LC[0] + parseFloat(newCommand[newCommand.length -2]);
-                    }else{
-                        for(I = 2; I < newCommand.length; I+=2){
-                           newCommand[I-1] = LC[0] + parseFloat(newCommand[I-1]) ;
-                           newCommand[I]   = LC[1] + parseFloat(newCommand[I]);
-                       }
-                    }
-                break;
-            }
-
-            if (newCommand[0].toLowerCase() !== 'z') {
-                lx = parseFloat(newCommand[newCommand.length-2]);
-                ly = parseFloat(newCommand[newCommand.length-1]);
-
-                if (beginning) {
-                    iX = lx;
-                    iY = ly;
-                    beginning = false;
-                }
-            } else {
-                beginning = true;
-                lx = iX;
-                ly = iY;
-            }
-            path.push(newCommand);
-        }
         return path;
     };
 
@@ -297,7 +226,7 @@
 
             result.push(fn.call(thisArg, segment, x, y));
 
-            if(command == 'Z') {
+            if(segment[0] == 'Z') {
                 x = y = 0;
             }else{
                 x = segment[segment.length - 2];
