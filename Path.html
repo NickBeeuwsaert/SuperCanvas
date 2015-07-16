@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Path &mdash; SuperCanvas 2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="SuperCanvas 2.0 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to SuperCanvas’s documentation!" href="index.html" /> 
+<script type="text/javascript">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$', '$'], ["\\(", "\\)"]],
+        processEscapes: true
+      }
+});
+</script>      
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to SuperCanvas’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">SuperCanvas 2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="path">
+<h1>Path<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h1>
+<p>This module provides essential path parsing functions to SuperCanvas. Also quite a bit of nifty math</p>
+<dl class="function">
+<dt id="getExtents">
+<code class="descname">getExtents</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#getExtents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get&#8217;s the extents of the provided path, as a object
+with the keys &#8216;left&#8217;, &#8216;right&#8217;, &#8216;top&#8217;, &#8216;bottom&#8217;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<cite>Array</cite> or <cite>String</cite>) &#8211; the path to transform</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="each">
+<code class="descname">each</code><span class="sig-paren">(</span><em>path</em>, <em>callback</em><span class="optional">[</span>, <em>thisArg = null</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#each" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over the provided path and calls <cite>callback</cite> for each segment</p>
+<p>This function will take care of shorthand and relative commands for you.</p>
+<p>In addition, this function can be used to map a path and return a new one.</p>
+<p>The callback function signature should look like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">segment</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Usage example:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">Path</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="s2">&quot;m1,2 3,4h10&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">segment</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">segment</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>will yield:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">&quot;M&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="p">[</span><span class="s">&quot;L&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<cite>Array</cite> or <cite>String</cite>) &#8211; The path to iterate over</li>
+<li><strong>callback</strong> (<em>Function</em>) &#8211; The callback to call</li>
+<li><strong>thisArg</strong> &#8211; would should <cite>this</cite> refer to in the callback</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="parsePath">
+<code class="descname">parsePath</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#parsePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>parses a path into a SuperCanvas compatible path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>String</em>) &#8211; The path to parse</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="cubicBezierCurve">
+<code class="descname">cubicBezierCurve</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em>, <em>P3</em>, <em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#cubicBezierCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the value for a cubic bezier at time <cite>t</cite></p>
+<p>The cubic bezier function looks like:</p>
+<p>$$ B_{P_0,P_1,P_2,P_3}(t) = (1-t)^3P_0 + 3(1-t)^2tP_1 + 3(1-t)t^2P2 + t^3P_3 $$</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+<li><strong>P3</strong> (<em>Number</em>) &#8211; Control point #3</li>
+<li><strong>t</strong> &#8211; Time of the function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Number</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="cubicBezierCurveDerivative">
+<code class="descname">cubicBezierCurveDerivative</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em>, <em>P3</em>, <em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#cubicBezierCurveDerivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the derivative of the cubic bezier curve at t, the derivative:</p>
+<p>$$ B&#8217;_{P_0,P_1,P_2,P_3}(t) = 3t^2(P_3 - 3P_2 + 3P_1 - P_0) + 6t(P_2 - 2P_1 + P_0) + 3(P_1 - P_0) $$</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+<li><strong>P3</strong> (<em>Number</em>) &#8211; Control point #3</li>
+<li><strong>t</strong> &#8211; Time of the function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Number</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="cubicBezierCurveZeroes">
+<code class="descname">cubicBezierCurveZeroes</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em>, <em>P3</em><span class="sig-paren">)</span><a class="headerlink" href="#cubicBezierCurveZeroes" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the two values of <cite>t</cite> where cubic bezier curve will be zero.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This function doesn&#8217;t do bounds checking on the value of <cite>t</cite>. It is up to you to bind it to the range [0, 1]</p>
+</div>
+<p>Assuming $ a = 3(P_3 - 3P_2 + 3P_1 - P_0) $, $ b = 6(P_2 - 2P_1 + P_0) $, and $ c = 3(P_1 - P_0) $, the function will return the two values yielded by</p>
+<p>$$ \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+<li><strong>P3</strong> (<em>Number</em>) &#8211; Control point #3</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="cubicBezierExtents">
+<code class="descname">cubicBezierExtents</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em>, <em>P3</em><span class="sig-paren">)</span><a class="headerlink" href="#cubicBezierExtents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the min and max value of the bezier curve for the control points provided</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+<li><strong>P3</strong> (<em>Number</em>) &#8211; Control point #3</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="quadraticBezierCurve">
+<code class="descname">quadraticBezierCurve</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em>, <em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#quadraticBezierCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the value of the quadratic curve at time <cite>t</cite></p>
+<p>$$ B_{P_0,P_1,P_2}(t) = (1-t)^2P_0 + 2(1-t)tP_1 + t^2P_2 $$</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+<li><strong>t</strong> (<em>Number</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Number</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="quadraticBezierCurveDerivative">
+<code class="descname">quadraticBezierCurveDerivative</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em>, <em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#quadraticBezierCurveDerivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Derivative of the quadratic curve at <cite>t</cite></p>
+<p>$$ B&#8217;_{P_0,P_1,P_2}(t) = -2(1-t)P_0 + 2(1-2)tP_1 + 2tP_2 $$</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+<li><strong>t</strong> (<em>Number</em>) &#8211; SPILL THE TEA GURL</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Number</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="quadraticBezierCurveZeroes">
+<code class="descname">quadraticBezierCurveZeroes</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em><span class="sig-paren">)</span><a class="headerlink" href="#quadraticBezierCurveZeroes" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the value of <cite>t</cite> at which the derivative a quadratic curve with control points given will be zero</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This function doesn&#8217;t do bounds checking on the value of <cite>t</cite>. It is up to you to bind it to the range [0, 1]</p>
+</div>
+<p>$$ \dfrac{P_0 - P_1}{P_0 - 2P_1 + P_2} $$</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Number</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="quadraticBezierExtents">
+<code class="descname">quadraticBezierExtents</code><span class="sig-paren">(</span><em>P0</em>, <em>P2</em>, <em>P3</em><span class="sig-paren">)</span><a class="headerlink" href="#quadraticBezierExtents" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the extents of the quadratic curve with the provided control points</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to SuperCanvas&#8217;s documentation!</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Path.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Nick Beeuwsaert.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.4</a>
+      
+      |
+      <a href="_sources/Path.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>
