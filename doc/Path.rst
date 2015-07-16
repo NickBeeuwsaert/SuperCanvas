@@ -98,13 +98,7 @@ This module provides essential path parsing functions to SuperCanvas. Also quite
 
         This function doesn't do bounds checking on the value of `t`. It is up to you to bind it to the range [0, 1]
 
-    Assuming
-
-    $$ a = 3(P_3 - 3P_2 + 3P_1 - P_0) $$
-    $$ b = 6(P_2 - 2P_1 + P_0) $$
-    $$ c = 3(P_1 - P_0) $$
-
-    Then the function will return the two values yielded by
+    Assuming $ a = 3(P_3 - 3P_2 + 3P_1 - P_0) $, $ b = 6(P_2 - 2P_1 + P_0) $, and $ c = 3(P_1 - P_0) $, the function will return the two values yielded by
 
     $$ \\dfrac{-b \\pm \\sqrt{b^2 - 4ac}}{2a} $$
 

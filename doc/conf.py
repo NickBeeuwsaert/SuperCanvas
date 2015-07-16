@@ -286,3 +286,4 @@ texinfo_documents = [
 #texinfo_no_detailmenu = False
 
 default_domain = 'javascript'
+

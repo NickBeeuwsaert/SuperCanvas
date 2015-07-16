@@ -1,7 +1,7 @@
 var assert = require("assert");
 
 describe('Path', function(){
-    var Path = require("../src/Path.js");
+    var Path = require("../").Path;
     describe('#parsePath', function(){
         it("Should parse a SVG path", function() {
             assert.deepEqual(
