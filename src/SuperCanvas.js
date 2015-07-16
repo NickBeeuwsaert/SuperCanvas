@@ -14,6 +14,7 @@ var SuperCanvas = function(canvas) {
     this.context = canvas.getContext('2d');
     this.canvas  = canvas;
 };
+
 SuperCanvas.fn = {
     setFill: function(fill) {
         this.context.fillStyle = fill;
@@ -24,7 +25,7 @@ SuperCanvas.fn = {
     setLineWidth: function(width) {
         this.context.lineWidth = width;
     },
-    drawPath: function(d) {
+    drawPath: function(d, transform) {
         //var ctx = this.context;
         var t = this;
         t.beginPath();
