@@ -4,7 +4,7 @@
   "description": "HTML5 Canvas library for parsing and using SVG paths",
   "main": "dist/SuperCanvas.js",
   "scripts": {
-    "test": "mocha"
+    "test": "gulp && mocha"
   },
   "repository": {
     "type": "git",
