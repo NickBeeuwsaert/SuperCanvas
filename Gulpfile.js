@@ -1,7 +1,7 @@
-var gulp = require("gulp"),
-    babel = require("gulp-babel"),
+var gulp   = require("gulp"),
+    babel  = require("gulp-babel"),
     jshint = require("gulp-jshint"),
-    wrap = require("gulp-wrap"),
+    wrap   = require("gulp-wrap"),
     concat = require("gulp-concat"),
     uglify = require("gulp-uglify"),
     rename = require("gulp-rename");
@@ -21,7 +21,6 @@ gulp.task('build', function() {
     .pipe(concat('SuperCanvas.js'))
     .pipe(wrap({'src': 'dist/template.js'}))
     .pipe(gulp.dest('dist/'));
-        
 });
 
 gulp.task('compress', function(){

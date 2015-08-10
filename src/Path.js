@@ -195,7 +195,6 @@ SuperCanvas.Path = (function() {
             path = Path.parsePath(path);
         }
         fn = fn || Path.normalizeCallback;
-        var result = [];
 
         var x, y;
         var i, j, lastSegment;
@@ -206,7 +205,7 @@ SuperCanvas.Path = (function() {
         x = lastSegment[lastSegment.length - 2];
         y = lastSegment[lastSegment.length - 1];
         
-        result.push(fn.call(thisArg, lastSegment, x, y) || segment);
+        fn.call(thisArg, lastSegment, x, y);
 
         for(i = 1; i < path.length; i++) {
             var segment = path[i].slice(0);
@@ -216,7 +215,7 @@ SuperCanvas.Path = (function() {
             //Remove shorthand...
             segment = Path.removeShorthand(segment, lastSegment, x, y);
 
-            result.push(fn.call(thisArg, segment, x, y));
+            fn.call(thisArg, segment, x, y);
 
             if(segment[0] == 'Z') {
                 x = y = 0;
@@ -227,7 +226,14 @@ SuperCanvas.Path = (function() {
 
             lastSegment = segment;
         }
-        return result;
+    };
+
+    Path.map = function(path, fn, thisArg) {
+        var results = [];
+        Path.each(path, function() {
+            results.push(fn.apply(this, arguments));
+        }, thisArg);
+        return results;
     };
 
     Path.cubicBezierCurve = function(P0, P1, P2, P3, t) {
@@ -291,6 +297,47 @@ SuperCanvas.Path = (function() {
         if(0 < t && t < 1)
             points.push(Path.quadraticBezierCurve(P0, P1, P2, t));
         return [Math.min.apply(null, points), Math.max.apply(null, points)];
+    };
+
+    var lerp = function(s, e, t) {
+        return s + (e - s) * t;
+    };
+
+    Path.divideCubicBezierCurve = function(P0, P1, P2, P3, t) {
+        var P10 = lerp(P0, P1, t),
+            P11 = lerp(P1, P2, t),
+            P12 = lerp(P2, P3, t);
+
+        var P20 = lerp(P10, P11, t),
+            P21 = lerp(P11, P12, t);
+
+        var P30 = lerp(P20, P21, t);
+
+        return [
+            [P0, P10, P20, P30],
+            [P30, P21, P12, P3]
+        ];
+    };
+
+    Path.divideQuadraticBezierCurve = function(P0, P1, P2, t) {
+        var P10 = lerp(P0, P1, t),
+            P11 = lerp(P1, P2, t);
+
+        var P20 = lerp(P10, P11, t);
+
+        return [
+            [P0, P10, P20],
+            [P20, P11, P2]
+        ];
+    };
+
+    Path.convertQuadraticCurveToCubic = function(P0, P1, P2) {
+        return [
+            P0,
+            lerp(P0, P1, 2/3),
+            lerp(P1, P2, 1/3),
+            P2
+        ];
     };
 
     //These functions are used in the ellipitcal arc function

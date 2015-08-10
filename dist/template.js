@@ -7,6 +7,7 @@
         root.SuperCanvas = factory();
     }
 })(this, function(){
-<%= contents %>
+<% (contents+'').split('\n').forEach(function(line){ %>
+    <%= line %><% }); %>
     return SuperCanvas;
 });

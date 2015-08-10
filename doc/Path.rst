@@ -187,3 +187,65 @@ This module provides essential path parsing functions to SuperCanvas. Also quite
     :type P1: Number
     :type P2: Number
     :rtype: Array
+
+.. function:: divideCubicBezierCurve(P0, P1, P2, P3, t)
+
+    Divides a cubic bezier curve at point `t`.
+
+    .. figure:: _static/bezier_cubic_subdivision.svg
+        :width: 50%
+        :align: center
+
+        How bezier subdivision works
+
+    :param P0: Control point #0
+    :param P1: Control point #1
+    :param P2: Control point #2
+    :param P3: Control point #3
+    :param t: Point at which to cut
+    :type P0: Number
+    :type P1: Number
+    :type P2: Number
+    :type P3: Number
+    :type t: Number
+    :rtype: Array
+
+
+.. function:: divideQuadraticBezierCurve(P0, P1, P2, t)
+
+    Divides a cubic bezier curve at point `t`.
+
+    .. figure:: _static/bezier_quadratic_subdivision.svg
+        :width: 50%
+        :align: center
+
+        How bezier subdivision works
+
+    :param P0: Control point #0
+    :param P1: Control point #1
+    :param P2: Control point #2
+    :param t: Point at which to cut
+    :type P0: Number
+    :type P1: Number
+    :type P3: Number
+    :type t: Number
+    :rtype: Array
+
+.. function:: convertQuadraticCurveToCubicCurve(P0, P1, P2)
+
+    Converts a quadratic curve with control points $ P_0, P_1, P_2 $ to a cubic curve
+
+    .. figure:: _static/bezier_conversion.svg
+        :width: 50%
+        :align: center
+
+        How bezier subdivision works
+
+    :param P0: Control point #0
+    :param P1: Control point #1
+    :param P2: Control point #2
+    :type P0: Number
+    :type P1: Number
+    :type P3: Number
+    :type t: Number
+    :rtype: Array

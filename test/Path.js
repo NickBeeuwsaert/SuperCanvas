@@ -102,13 +102,17 @@ describe('Path', function(){
         });
     });
 
-    describe('#each', function(){
+    describe('#map', function(){
+        var noOp = function(segment){
+            return segment;
+        };
+
         it("Should make paths absolute", function(){
             assert.deepEqual(
-                Path.each([
+                Path.map([
                     ["m", 10, 15],
                     ["l", 20, 25]
-                ]),
+                ], noOp),
                 [
                     ["M", 10, 15],
                     ["L", 30, 40]
@@ -116,11 +120,12 @@ describe('Path', function(){
             );
         });
         it("Should remove shorthand properties", function(){
+            //assert.deepEqual(undefined, []);
             assert.deepEqual(
-                Path.each([
+                Path.map([
                     ["M", 10, 15],
                     ["v", 15]
-                ]),
+                ], noOp),
                 [
                     ["M", 10, 15],
                     ["L", 10, 30]
@@ -128,10 +133,10 @@ describe('Path', function(){
             );
 
             assert.deepEqual(
-                Path.each([
+                Path.map([
                     ["M", 10, 15],
                     ["h", 15]
-                ]),
+                ], noOp),
                 [
                     ["M", 10, 15],
                     ["L", 25, 15]
@@ -139,11 +144,11 @@ describe('Path', function(){
             );
 
             assert.deepEqual(
-                Path.each([//M0,0Q150, 0 150, 150T50,50
+                Path.map([//M0,0Q150, 0 150, 150T50,50
                     ["M", 0, 0],
                     ["Q", 150, 0, 150, 150],
                     ["T", 50, 50]
-                ]),
+                ], noOp),
                 [
                     ["M", 0, 0],
                     ["Q", 150, 0, 150, 150],
@@ -152,15 +157,46 @@ describe('Path', function(){
             );
 
             assert.deepEqual(
-                Path.each([//M0,0C100,0 0,100 100,100S0,0 50,50
+                Path.map([//M0,0C100,0 0,100 100,100S0,0 50,50
                     ["M", 0, 0],
                     ["C", 100, 0, 0, 100, 100,100],
                     ["S", 0, 0, 50, 50]
-                ]),
+                ], noOp),
                 [//M0,0C100,0 0,100 100,100C200,100 0,0 50,50
                     ["M", 0, 0],
                     ["C", 100, 0, 0, 100, 100,100],
                     ["C", 200, 100, 0, 0, 50, 50]
+                ]
+            );
+        });
+    });
+
+    describe("#divideCubicBezierCurve", function(){
+        it("Should divide cubic bezier curves correctly", function(){
+            assert.deepEqual(
+                [
+                    Path.divideCubicBezierCurve(0, 1024, 0, 1024, 0.5),
+                    Path.divideCubicBezierCurve(0, 0, 1024, 1024, 0.5)
+                ],
+                [
+                    [[0, 512, 512, 512], [512, 512, 512, 1024]],
+                    [[0, 0, 256, 512], [512, 768, 1024, 1024]]
+                ]
+            );
+        });
+    });
+
+
+    describe("#divideQuadraticBezierCurve", function(){
+        it("Should divide cubic bezier curves correctly", function(){
+            assert.deepEqual(
+                [
+                    Path.divideQuadraticBezierCurve(0, 1024, 1024, 0.5),
+                    Path.divideQuadraticBezierCurve(0, 0, 1024, 0.5)
+                ],
+                [
+                    [[0, 512, 768 ], [768, 1024, 1024]],
+                    [[ 0, 0, 256 ], [ 256, 512, 1024 ]]
                 ]
             );
         });
