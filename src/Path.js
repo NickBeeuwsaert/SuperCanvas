@@ -1,4 +1,4 @@
-SuperCanvas.Path = (function() {
+define(function() {
     var Path = {};
 
     Path.pathLengths = {
@@ -441,4 +441,4 @@ SuperCanvas.Path = (function() {
     };
 
     return Path;
-})();
+});

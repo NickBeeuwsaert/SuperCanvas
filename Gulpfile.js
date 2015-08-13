@@ -1,10 +1,9 @@
 var gulp   = require("gulp"),
     babel  = require("gulp-babel"),
     jshint = require("gulp-jshint"),
-    wrap   = require("gulp-wrap"),
-    concat = require("gulp-concat"),
     uglify = require("gulp-uglify"),
-    rename = require("gulp-rename");
+    rename = require("gulp-rename"),
+    webpack= require("webpack-stream");
 
 gulp.task('jshint', function(){
     return gulp.src('./src/*.js')
@@ -14,13 +13,16 @@ gulp.task('jshint', function(){
 
 gulp.task('build', function() {
     return gulp.src([
-        'src/SuperCanvas.js',
-        'src/Path.js',
-        'src/Matrix.js'
+        "src/SuperCanvas.js"
     ])
-    .pipe(concat('SuperCanvas.js'))
-    .pipe(wrap({'src': 'dist/template.js'}))
-    .pipe(gulp.dest('dist/'));
+    .pipe(webpack({
+        output: {
+            "library": "SuperCanvas",
+            "libraryTarget": "umd",
+            "filename": "SuperCanvas.js"
+        }
+    }))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('compress', function(){

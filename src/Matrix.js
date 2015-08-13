@@ -1,5 +1,5 @@
 //Operates on a 3x3 matrix
-SuperCanvas.Matrix = (function(){
+define(function(){
     var Matrix = function() {
     };
 
@@ -95,4 +95,4 @@ SuperCanvas.Matrix = (function(){
     };
 
     return Matrix;
-})();
+});
