@@ -1,5 +1,47 @@
 define(function() {
-    var Path = {};
+    var Path = function(d){
+        Path.each(d, function(segment) {
+            this.push(segment);
+        }, this);
+    };
+
+    Path.prototype = Object.create(Array.prototype);
+
+    Path.prototype.moveTo = function(x, y) {
+        this.push(["M", x, y]);
+        return this;
+    };
+    Path.prototype.lineTo = function(x, y) {
+        this.push(["L", x, y]);
+        return this;
+    };
+    Path.prototype.bezierCurveTo = function(cp0x, cp0y, cp1x, cp1y, x, y) {
+        this.push(["C", cp0x, cp0y, cp1x, cp1y, x, y]);
+        return this;
+    };
+    Path.prototype.smoothBezierCurveTo = function(cp1x, cp1y, x, y) {
+        this.push(["S", cp1x, cp1y, x, y]);
+        return this;
+    };
+    Path.prototype.quadraticCurveTo = function(cp0x, cp0y, x, y) {
+        this.push(["Q", cp0x, cp0y, x, y]);
+        return this;
+    };
+    Path.prototype.smoothQuadraticCurveTo = function(x, y) {
+        this.push(["T", x, y]);
+        return this;
+    };
+    Path.prototype.closePath= function() {
+        this.push(["Z"]);
+        return this;
+    };
+
+    Path.prototype.toString = function() {
+        return this.map(function(segment) {
+            var command = segment.shift();
+            return command + segment.join(',');
+        }).join('');
+    };
 
     Path.pathLengths = {
         'L': 2,

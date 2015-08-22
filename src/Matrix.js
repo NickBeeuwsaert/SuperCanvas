@@ -1,98 +1,79 @@
 //Operates on a 3x3 matrix
 define(function(){
-    var Matrix = function() {
-    };
-
-    var a = 0,
-        b = 1,
-        c = 2,
-        d = 3,
-        e = 4,
-        f = 5,
-        g = 6,
-        h = 7,
-        i = 8;
-
     /**
-        a b c 
-      [ d e f ]
-        g h i 
+     * [ a c e ]
+     * [ b d f ]
+     * [ 0 0 1 ]
+     */
+    var a = 0, c = 2, e = 4,
+        b = 1, d = 3, f = 5;
+    var Matrix = function(A, B, C, D, E, F) {
+        var defaultArgs = [1, 0, 0, 1, 0, 0];
+        var args = [].slice.call(arguments).concat(defaultArgs.slice(arguments.length));
+        this[a] = args[a];
+        this[b] = args[b];
+        this[c] = args[c];
 
-    M_1 * M_2 = M_1a * M_2a + M_1b * M_2d + M
-    */
-    Matrix.identityMatrix = function(){
-        return [1, 0, 0,
-                0, 1, 0,
-                0, 0, 1];
-    };
-    Matrix.rotate = function(matrixLike, angle) {
-        return Matrix.multiply(matrixLike, [
-            +Math.cos(angle), -Math.sin(angle), 0,
-            +Math.sin(angle), +Math.cos(angle), 0,
-                           0,                0, 1
-        ]);
-    };
-    Matrix.translate = function(matrixLike, x, y) {
-        return Matrix.multiply(matrixLike, [
-            1, 0, x,
-            0, 1, y,
-            0, 0, 1
-        ]);
-    };
-    Matrix.scale = function(matrixLike, sx, sy) {
-        return Matrix.multiply(matrixLike, [
-            sx,  0, 0,
-             0, sy, 0,
-             0,  0, 1
-        ]);
-    };
-    Matrix.skewX = function(matrixLike, skew) {
-        return Matrix.multiply(matrixLike, [
-            1, Math.tan(skew), 0,
-            0,              1, 0,
-            0,              0, 1
-        ]);
-    };
-    Matrix.skewY = function(matrixLike, skew) {
-        return Matrix.multiply(matrixLike, [
-            1,              0, 0,
-            Math.tan(skew), 1, 0,
-            0,              0, 1
-        ]);
-    };
-    Matrix.skewY = function(matrixLike, x, y) {
-        return Matrix.multiply(matrixLike, [
-            1,              Math.tan(x), 0,
-            Math.tan(y),              1, 0,
-            0,                        0, 1
-        ]);
+        this[d] = args[d];
+        this[e] = args[e];
+        this[f] = args[f];
+
+        this.length = 6;
     };
 
-    Matrix.multiply = function(matrixLike, rhs) {
-        return [
-            matrixLike[a] * rhs[a] + matrixLike[b] * rhs[d] + matrixLike[c] * rhs[g], // a
-            matrixLike[a] * rhs[b] + matrixLike[b] * rhs[e] + matrixLike[c] * rhs[h], // b
-            matrixLike[a] * rhs[c] + matrixLike[b] * rhs[f] + matrixLike[c] * rhs[i], // c
-            
-            matrixLike[d] * rhs[a] + matrixLike[e] * rhs[d] + matrixLike[f] * rhs[g], // d
-            matrixLike[d] * rhs[b] + matrixLike[e] * rhs[e] + matrixLike[f] * rhs[h], // e
-            matrixLike[d] * rhs[c] + matrixLike[e] * rhs[f] + matrixLike[f] * rhs[i], // f
+    Matrix.prototype.matrix = function(A, B, C,
+                                       D, E, F) {
+        //[ a*A + c*B + e*0   a*C + c*D + e*0   a*E + c*F + e ]
+        //[ b*A + d*B + f*0   b*C + d*D + f*0   b*E + d*F + f ]
+        //[        0                 0                 1      ]
 
-            matrixLike[g] * rhs[a] + matrixLike[h] * rhs[d] + matrixLike[i] * rhs[g], // g
-            matrixLike[g] * rhs[b] + matrixLike[h] * rhs[e] + matrixLike[i] * rhs[h], // h
-            matrixLike[g] * rhs[c] + matrixLike[h] * rhs[f] + matrixLike[i] * rhs[i], // i
-        ];
+        var _a = this[a] * A + this[c] * B;
+        var _b = this[b] * A + this[d] * B;
+
+        var _c = this[a] * C + this[c] * D;
+        var _d = this[b] * C + this[d] * D;
+
+        var _e = this[a] * E + this[c] * F + this[e];
+        var _f = this[b] * E + this[d] * F + this[f];
+
+        this[a] = _a;
+        this[b] = _b;
+        this[c] = _c;
+
+        this[d] = _d;
+        this[e] = _e;
+        this[f] = _f;
+
+        return this;
     };
 
-    // TODO: name this better
-    Matrix.multiplyVector = function(matrixLike, x, y) {
-        // v = <x, y, 1>
-        return [
-            x * matrixLike[a] + y * matrixLike[b] + 1 * matrixLike[c],
-            x * matrixLike[d] + y * matrixLike[e] + 1 * matrixLike[f],
-            // x * matrixLike[g] + y * matrixLike[h] + 1 * matrixLike[i]
-        ];
+    Matrix.prototype.rotate = function(a, x, y) {
+        if(arguments.length >= 2) this.translate(x, y);
+        var c = Math.cos(a);
+        var s = Math.sin(a);
+        this.matrix(c, s, -s,  c, 0, 0);
+        if(arguments.length >= 2) this.translate(-x, -y);
+        return this;
     };
 
+    Matrix.prototype.skewX = function(a){
+        return this.matrix(1, 0, Math.tan(a), 1, 0, 0);
+    };
+    Matrix.prototype.skewY = function(a){
+        return this.matrix(1, Math.tan(a), 0, 1, 0, 0);
+    };
+    Matrix.prototype.translate = function(x, y){
+        return this.matrix(1, 0, 0, 1, x, y||0);
+    };
+    Matrix.prototype.scale = function(x, y){
+        return this.matrix(x, 0, 0, y||x, 0, 0);
+    };
+
+    Matrix.prototype.transformPoint = function(x, y) {
+        return {
+            x: this[a]*x + this[c]*y + this[e],
+            y: this[b]*x + this[d]*y + this[f]
+        };
+    };
     return Matrix;
 });
