@@ -1,10 +1,12 @@
 define(function() {
     var Path = function(d){
+        //Skip parsing if d is falsey
+        if(!d) return;
         Path.each(d, function(segment) {
             this.push(segment);
         }, this);
     };
-
+    // inherit from array
     Path.prototype = Object.create(Array.prototype);
 
     Path.prototype.moveTo = function(x, y) {
@@ -34,6 +36,9 @@ define(function() {
     Path.prototype.closePath= function() {
         this.push(["Z"]);
         return this;
+    };
+    Path.prototype.getExtents = function(){
+        return Path.getExtents(this);
     };
 
     Path.prototype.toString = function() {

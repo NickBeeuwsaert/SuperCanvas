@@ -2,6 +2,24 @@ var assert = require("assert");
 
 describe('Path', function(){
     var Path = require("../").Path;
+
+    it("Should be able to construct paths", function(){
+        var p = new Path();
+
+        p.moveTo(0, 0)
+         .lineTo(100, 10)
+         .bezierCurveTo(10, 0, 0, 10, 10, 10)
+         .quadraticCurveTo(100,100, 0, 0)
+         .smoothBezierCurveTo(10, 0, 10, 10)
+         .smoothQuadraticCurveTo(50, 50)
+         .closePath();
+
+        assert.equal(
+            p.toString(),
+            "M0,0L100,10C10,0,0,10,10,10Q100,100,0,0S10,0,10,10T50,50Z"
+        );
+    });
+
     describe('#parsePath', function(){
         it("Should parse a SVG path", function() {
             assert.deepEqual(
@@ -54,7 +72,7 @@ describe('Path', function(){
 
 
             assert.deepEqual(
-                Path.getExtents("M0, 0 C10,12 20,12 30, 0"),
+                Path.getExtents("M0,0 C10,12 20,12 30, 0"),
                 {
                     left: 0,
                     right: 30,
