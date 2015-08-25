@@ -1,0 +1,29 @@
+{
+  "name": "SuperCanvas",
+  "version": "0.0.0",
+  "homepage": "https://github.com/NickBeeuwsaert/SuperCanvas",
+  "authors": [
+    "Nick Beeuwsaert <nick.beeuwsaert@gmail.com>"
+  ],
+  "description": "A library for parsing and manipulating SVG paths with HTML5 Canvas",
+  "main": "dist/SuperCanvas.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "SVG",
+    "Canvas",
+    "Path",
+    "parsing"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
