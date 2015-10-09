@@ -246,6 +246,15 @@ This module provides essential path parsing functions to SuperCanvas. Also quite
     :param P2: Control point #2
     :type P0: Number
     :type P1: Number
-    :type P3: Number
+    :type P2: Number
     :type t: Number
+    :rtype: Array
+
+.. function:: interpolate(path_a, path_b, t)
+
+    Interpolates two paths, returning a third path that is a combination of the first and second
+
+    :param path_a: the first path
+    :param path_b: the second path
+    :param t: a value in the range [0, 1] to interpolate the paths by
     :rtype: Array

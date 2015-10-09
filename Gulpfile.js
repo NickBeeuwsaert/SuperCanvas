@@ -32,4 +32,9 @@ gulp.task('compress', function(){
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('watch', function(){
+    gulp.watch('src/**/*.js', ['build']);
+});
+
 gulp.task('default', ['jshint', 'build', 'compress']);
+

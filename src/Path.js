@@ -1,5 +1,8 @@
-define(function() {
+define(['./functools.js'], function(functools) {
+    "use strict";
     var Path = function(d){
+        this.length = 0;
+        
         //Skip parsing if d is falsey
         if(!d) return;
         Path.each(d, function(segment) {
@@ -7,7 +10,10 @@ define(function() {
         }, this);
     };
     // inherit from array
-    Path.prototype = Object.create(Array.prototype);
+    //Path.prototype = Object.create(Array.prototype);
+    Path.prototype.push = function(segment) {
+        this[this.length++] = segment;
+    };
 
     Path.prototype.moveTo = function(x, y) {
         this.push(["M", x, y]);
@@ -57,7 +63,7 @@ define(function() {
         'T': 2,
         'A': 7,
         'V': 1,
-        'H': 1
+        'H': 1,
     };
 
     Path.parsePath = function(d){
@@ -74,6 +80,11 @@ define(function() {
             var segment = pathArr[i];
             var command = segment.shift();
             segment = segment.map(parseFloat);
+
+            if(command.toUpperCase() === 'Z') {
+                path.push(['Z']);
+                continue;
+            }
 
             var l = Path.pathLengths[command.toUpperCase()];
 
@@ -262,7 +273,7 @@ define(function() {
             //Remove shorthand...
             segment = Path.removeShorthand(segment, lastSegment, x, y);
 
-            fn.call(thisArg, segment, x, y);
+            fn.call(thisArg, segment.slice(0), x, y);
 
             if(segment[0] == 'Z') {
                 x = y = 0;
@@ -485,6 +496,108 @@ define(function() {
             NaN, NaN, NaN, NaN // bounding box (Not implemented)
         ];
 
+    };
+
+    var quadraticCurveToCubicCurve = function(x0, y0, x1, y1, x2, y2) {
+        return [
+            x0, y0,
+            lerp(x0, x1, 2/3), lerp(y0, y1, 2/3),
+            lerp(x1, x2, 1 - 2/3), lerp(y1, y2, 1 - 2/3),
+            x2, y2
+        ];
+    };
+
+    var lineToCubicCurve = function(x0, y0, x1, y1) {
+        var p0 = lerp(x0, x1, 0.5),
+            p1 = lerp(y0, y1, 0.5);
+        return quadraticCurveToCubicCurve(x0, y0, p0, p1, x1, y1);
+    };
+
+    /*Path.convertToBeziers = function(path) {
+        return Path.map(path, function(segment, x, y){
+            var cmd = segment.shift();
+            switch(cmd) {
+                case 'L':
+                    return ['C'].concat(lineToCubicCurve.apply(null, [x, y].concat(segment)).slice(2));
+                case 'Q':
+                    return ['C'].concat(quadraticCurveToCubicCurve.apply(null, [x, y].concat(segment)).slice(2));
+                default:
+                    return [cmd].concat(segment);
+            }
+        });
+    };*/
+
+    var splitSubpaths = function(path) {
+        var result = [];
+        var currentPath = [];
+        Path.each(path, function(segment, x, y) {
+            if(segment[0] === "M") {
+                if(currentPath.length)
+                    result.push(currentPath);
+                currentPath=[];
+            }
+            currentPath.push(segment);
+            if( segment[0] === "Z") {
+                if(currentPath.length)
+                    result.push(currentPath);
+                currentPath = [];
+            }
+        });
+        if(currentPath.length)
+            result.push(currentPath);
+        return result;
+    };
+
+    var convertToBeziers = function(path, x, y) {
+        var command = path.shift();
+        switch(command) {
+            case 'L':
+                return ['C'].concat(lineToCubicCurve.apply(null, [x, y].concat(path)).slice(2));
+            case 'Q':
+                return ['C'].concat(quadraticCurveToCubicCurve.apply(null, [x, y].concat(path)).slice(2));
+        }
+        return [command].concat(path);
+    };
+
+    Path.interpolate = function(path_a, path_b, t) {
+        var extractControlPoints = function(segment) {
+            var command = segment.shift();
+            return segment;
+        };
+
+        var interpolatedPoints = functools.zip(
+            Array.prototype.concat.apply([], Path.map(path_a, convertToBeziers).map(extractControlPoints)),
+            Array.prototype.concat.apply([], Path.map(path_b, convertToBeziers).map(extractControlPoints))
+        ).map(function(cp) {
+            return lerp(cp[0], cp[1], t);
+        });
+
+        var result = [
+            ['M'].concat(interpolatedPoints.splice(0, 2))
+        ];
+
+        while(interpolatedPoints.length) {
+            result.push(['C'].concat(interpolatedPoints.splice(0, Path.pathLengths["C"])));
+        }
+        //console.log(result);
+        return result;
+
+        //console.log(splitSubpaths("M10, 10 Q250, 250 490,10zQ250,250 10,490M250,250 490,490"));
+        /*var makeItEasy = function(segment, x, y){
+            var command = segment.shift();
+            if(command === "Z" || command === "M") return;
+            return [x, y].concat(segment);
+        };
+        var filterUndefined = function(i) { return i !== undefined; };
+        var p1 = Path.map(Path.convertToBeziers(path_a), makeItEasy).filter(filterUndefined);
+        var p2 = Path.map(Path.convertToBeziers(path_b), makeItEasy).filter(filterUndefined);
+        console.log(p1, p2);*/
+        //var zipped = functools.zip(path_a, path_b);
+        //var interp = zipped.map(function(set) {
+        //    return lerp(set[0], set[1], t);
+        //});
+        //var start = interp.slice(0, 2);
+        //return interp;
     };
 
     return Path;

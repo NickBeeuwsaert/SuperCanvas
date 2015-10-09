@@ -75,5 +75,17 @@ define(function(){
             y: this[b]*x + this[d]*y + this[f]
         };
     };
+
+    Matrix.from = (function(){
+        var Constructor = function(){};
+        Constructor.prototype = Matrix.prototype;
+
+        return function from(arrayLike) {
+            var mat = new Constructor();
+            Matrix.apply(mat, arrayLike);
+            return mat;
+        };
+    })();
+
     return Matrix;
 });

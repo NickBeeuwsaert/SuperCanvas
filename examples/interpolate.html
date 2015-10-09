@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Example</title>
+    <script src="../dist/SuperCanvas.js"></script>
+</head>
+<body>
+    <canvas id="c" width="500" height="500"></canvas>
+    <script>
+        var canvas = document.getElementById("c");
+        var ctx = new SuperCanvas(canvas);
+
+        //var path_1 = "M10,10L250,10 490,10";
+        //var path_2 = "M10,490Q125,375 250,490 375,375, 490,490";
+        /*var p1 = [].concat.apply([], SuperCanvas.Path.convertToBeziers(path_1).map(function(segment){
+            var command = segment.shift();
+            return segment;
+        }));
+        var p2 = [].concat.apply([], SuperCanvas.Path.convertToBeziers(path_2).map(function(segment){
+            var command = segment.shift();
+            return segment;
+        }));*/
+
+        var path_a = "M10,10l100,45 100,-45 100,45 100,-45 100,45";
+        //var path_b = "M10,490Q125,375 250,490";
+        var path_b = "M10,445Q50,400 100,445t100,0 100,0 100,0 100,0";
+        //path_b = SuperCanvas.Path.map(path_b, function(segment) {
+        //    return segment.join(' ');
+        //}).join('');
+        var _t = 0;
+
+        setInterval(function() {
+            var t = Math.abs((_t+=1) % 200 - 100) / 100;
+            var interpolated = SuperCanvas.Path.interpolate(path_a, path_b, t);
+
+            ctx.canvas.width += 0;
+
+            ctx.setLineWidth(10);
+            ctx.drawPath(path_a);
+
+            ctx.setStroke("red");
+            ctx.stroke();
+
+            ctx.drawPath(path_b);
+
+            ctx.setStroke("green");
+            ctx.stroke();
+
+            ctx.drawPath(interpolated);
+            ctx.setStroke("purple");
+            ctx.setLineWidth(2);
+            ctx.stroke();
+        }, 100);
+        //console.log(SuperCanvas.Path.map("M10,10L100,100H10L10Q250,250 500,0 S500,500C0,0 250,250 250,0T250,250 250,250", function(segment) {
+        //    return segment;
+        //}));
+
+        /*setInterval(function(){
+            t += 5;
+            var T = Math.abs(t%200 - 100) / 100;
+
+            canvas.width += 0;
+
+            var interpolated = SuperCanvas.Path.interpolate(p1, p2, T);
+
+            var start = "M" + interpolated.slice(0, 2).join(',');
+            var rest = "C" + interpolated.slice(2).join(' ');
+            var interpolated = start + rest;
+
+            ctx.setStroke("red");
+            ctx.setLineWidth(10);
+            ctx.drawPath(path_1);
+            ctx.stroke();
+
+            ctx.setStroke("blue");
+            ctx.setLineWidth(10);
+            ctx.drawPath(path_2);
+            ctx.stroke();
+
+
+            ctx.setStroke("black");
+            ctx.setLineWidth(5);
+            ctx.drawPath(interpolated);
+            ctx.stroke();
+        }, 100);*/
+
+
+    </script>
+</body>
+</html>
