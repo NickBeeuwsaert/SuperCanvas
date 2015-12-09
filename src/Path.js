@@ -10,7 +10,7 @@ define(['./functools.js'], function(functools) {
         }, this);
     };
     // inherit from array
-    //Path.prototype = Object.create(Array.prototype);
+    Path.prototype = Object.create(Array.prototype);
     Path.prototype.push = function(segment) {
         this[this.length++] = segment;
     };
