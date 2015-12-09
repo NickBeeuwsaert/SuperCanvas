@@ -331,6 +331,109 @@ with the keys &#8216;left&#8217;, &#8216;right&#8217;, &#8216;top&#8217;, &#8216
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="divideCubicBezierCurve">
+<code class="descname">divideCubicBezierCurve</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em>, <em>P3</em>, <em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#divideCubicBezierCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divides a cubic bezier curve at point <cite>t</cite>.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/bezier_cubic_subdivision.svg"><img src="_images/bezier_cubic_subdivision.svg" width="50%" /></a>
+<p class="caption"><span class="caption-text">How bezier subdivision works</span></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+<li><strong>P3</strong> (<em>Number</em>) &#8211; Control point #3</li>
+<li><strong>t</strong> (<em>Number</em>) &#8211; Point at which to cut</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="divideQuadraticBezierCurve">
+<code class="descname">divideQuadraticBezierCurve</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em>, <em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#divideQuadraticBezierCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divides a cubic bezier curve at point <cite>t</cite>.</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/bezier_quadratic_subdivision.svg"><img src="_images/bezier_quadratic_subdivision.svg" width="50%" /></a>
+<p class="caption"><span class="caption-text">How bezier subdivision works</span></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> &#8211; Control point #2</li>
+<li><strong>t</strong> (<em>Number</em>) &#8211; Point at which to cut</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="convertQuadraticCurveToCubicCurve">
+<code class="descname">convertQuadraticCurveToCubicCurve</code><span class="sig-paren">(</span><em>P0</em>, <em>P1</em>, <em>P2</em><span class="sig-paren">)</span><a class="headerlink" href="#convertQuadraticCurveToCubicCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a quadratic curve with control points $ P_0, P_1, P_2 $ to a cubic curve</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/bezier_conversion.svg"><img src="_images/bezier_conversion.svg" width="50%" /></a>
+<p class="caption"><span class="caption-text">How bezier subdivision works</span></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>P0</strong> (<em>Number</em>) &#8211; Control point #0</li>
+<li><strong>P1</strong> (<em>Number</em>) &#8211; Control point #1</li>
+<li><strong>P2</strong> (<em>Number</em>) &#8211; Control point #2</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="interpolate">
+<code class="descname">interpolate</code><span class="sig-paren">(</span><em>path_a</em>, <em>path_b</em>, <em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolates two paths, returning a third path that is a combination of the first and second</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path_a</strong> &#8211; the first path</li>
+<li><strong>path_b</strong> &#8211; the second path</li>
+<li><strong>t</strong> &#8211; a value in the range [0, 1] to interpolate the paths by</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
