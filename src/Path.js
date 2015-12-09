@@ -513,20 +513,7 @@ define(['./functools.js'], function(functools) {
         return quadraticCurveToCubicCurve(x0, y0, p0, p1, x1, y1);
     };
 
-    /*Path.convertToBeziers = function(path) {
-        return Path.map(path, function(segment, x, y){
-            var cmd = segment.shift();
-            switch(cmd) {
-                case 'L':
-                    return ['C'].concat(lineToCubicCurve.apply(null, [x, y].concat(segment)).slice(2));
-                case 'Q':
-                    return ['C'].concat(quadraticCurveToCubicCurve.apply(null, [x, y].concat(segment)).slice(2));
-                default:
-                    return [cmd].concat(segment);
-            }
-        });
-    };*/
-
+    // Janky, needs testing
     var splitSubpaths = function(path) {
         var result = [];
         var currentPath = [];
@@ -548,6 +535,7 @@ define(['./functools.js'], function(functools) {
         return result;
     };
 
+    // Converts each segment to a cubic bezier curve
     var convertToBeziers = function(path, x, y) {
         var command = path.shift();
         switch(command) {
@@ -555,6 +543,7 @@ define(['./functools.js'], function(functools) {
                 return ['C'].concat(lineToCubicCurve.apply(null, [x, y].concat(path)).slice(2));
             case 'Q':
                 return ['C'].concat(quadraticCurveToCubicCurve.apply(null, [x, y].concat(path)).slice(2));
+            // TODO: implement ellipitcal arcs
         }
         return [command].concat(path);
     };
@@ -564,6 +553,8 @@ define(['./functools.js'], function(functools) {
             var command = segment.shift();
             return segment;
         };
+
+        // TODO: Find the lengths of path_a and path_b and subdivide one to make the control point count equal
 
         var interpolatedPoints = functools.zip(
             Array.prototype.concat.apply([], Path.map(path_a, convertToBeziers).map(extractControlPoints)),
@@ -579,25 +570,8 @@ define(['./functools.js'], function(functools) {
         while(interpolatedPoints.length) {
             result.push(['C'].concat(interpolatedPoints.splice(0, Path.pathLengths["C"])));
         }
-        //console.log(result);
-        return result;
 
-        //console.log(splitSubpaths("M10, 10 Q250, 250 490,10zQ250,250 10,490M250,250 490,490"));
-        /*var makeItEasy = function(segment, x, y){
-            var command = segment.shift();
-            if(command === "Z" || command === "M") return;
-            return [x, y].concat(segment);
-        };
-        var filterUndefined = function(i) { return i !== undefined; };
-        var p1 = Path.map(Path.convertToBeziers(path_a), makeItEasy).filter(filterUndefined);
-        var p2 = Path.map(Path.convertToBeziers(path_b), makeItEasy).filter(filterUndefined);
-        console.log(p1, p2);*/
-        //var zipped = functools.zip(path_a, path_b);
-        //var interp = zipped.map(function(set) {
-        //    return lerp(set[0], set[1], t);
-        //});
-        //var start = interp.slice(0, 2);
-        //return interp;
+        return result;
     };
 
     return Path;
