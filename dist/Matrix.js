@@ -59,99 +59,129 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;//Operates on a 3x3 matrix
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function(){
-	    /**
-	     * [ a c e ]
-	     * [ b d f ]
-	     * [ 0 0 1 ]
-	     */
-	    var a = 0, c = 2, e = 4,
-	        b = 1, d = 3, f = 5;
-	    var Matrix = function(A, B, C, D, E, F) {
-	        var defaultArgs = [1, 0, 0, 1, 0, 0];
-	        var args = [].slice.call(arguments).concat(defaultArgs.slice(arguments.length));
-	        this[a] = args[a];
-	        this[b] = args[b];
-	        this[c] = args[c];
+	"use strict";
 
-	        this[d] = args[d];
-	        this[e] = args[e];
-	        this[f] = args[f];
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	        this.length = 6;
-	    };
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
-	    Matrix.prototype.matrix = function(A, B, C,
-	                                       D, E, F) {
-	        //[ a*A + c*B + e*0   a*C + c*D + e*0   a*E + c*F + e ]
-	        //[ b*A + d*B + f*0   b*C + d*D + f*0   b*E + d*F + f ]
-	        //[        0                 0                 1      ]
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	        var _a = this[a] * A + this[c] * B;
-	        var _b = this[b] * A + this[d] * B;
+	//Operates on a 3x3 matrix
+	/**
+	 * [ a c e ]
+	 * [ b d f ]
+	 * [ 0 0 1 ]
+	 */
+	var _Math = Math;
+	var cos = _Math.cos;
+	var sin = _Math.sin;
+	var tan = _Math.tan;
 
-	        var _c = this[a] * C + this[c] * D;
-	        var _d = this[b] * C + this[d] * D;
+	var Matrix = exports.Matrix = function () {
+	    function Matrix() {
+	        var a = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
+	        var b = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	        var c = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+	        var d = arguments.length <= 3 || arguments[3] === undefined ? 1 : arguments[3];
+	        var e = arguments.length <= 4 || arguments[4] === undefined ? 0 : arguments[4];
+	        var f = arguments.length <= 5 || arguments[5] === undefined ? 0 : arguments[5];
 
-	        var _e = this[a] * E + this[c] * F + this[e];
-	        var _f = this[b] * E + this[d] * F + this[f];
+	        _classCallCheck(this, Matrix);
 
-	        this[a] = _a;
-	        this[b] = _b;
-	        this[c] = _c;
+	        this.a = a;
+	        this.b = b;
+	        this.c = c;
+	        this.d = d;
+	        this.e = e;
+	        this.f = f;
+	    }
 
-	        this[d] = _d;
-	        this[e] = _e;
-	        this[f] = _f;
+	    _createClass(Matrix, [{
+	        key: "multiply",
+	        value: function multiply(A, B, C, D, E, F) {
+	            var _a = this.a * A + this.c * B;
+	            var _b = this.b * A + this.d * B;
 
-	        return this;
-	    };
+	            var _c = this.a * C + this.c * D;
+	            var _d = this.b * C + this.d * D;
 
-	    Matrix.prototype.rotate = function(a, x, y) {
-	        if(arguments.length >= 2) this.translate(x, y);
-	        var c = Math.cos(a);
-	        var s = Math.sin(a);
-	        this.matrix(c, s, -s,  c, 0, 0);
-	        if(arguments.length >= 2) this.translate(-x, -y);
-	        return this;
-	    };
+	            var _e = this.a * E + this.c * F + this.e;
+	            var _f = this.b * E + this.d * F + this.f;
 
-	    Matrix.prototype.skewX = function(a){
-	        return this.matrix(1, 0, Math.tan(a), 1, 0, 0);
-	    };
-	    Matrix.prototype.skewY = function(a){
-	        return this.matrix(1, Math.tan(a), 0, 1, 0, 0);
-	    };
-	    Matrix.prototype.translate = function(x, y){
-	        return this.matrix(1, 0, 0, 1, x, y||0);
-	    };
-	    Matrix.prototype.scale = function(x, y){
-	        return this.matrix(x, 0, 0, y||x, 0, 0);
-	    };
+	            this.a = _a;
+	            this.b = _b;
+	            this.c = _c;
 
-	    Matrix.prototype.transformPoint = function(x, y) {
-	        return {
-	            x: this[a]*x + this[c]*y + this[e],
-	            y: this[b]*x + this[d]*y + this[f]
-	        };
-	    };
+	            this.d = _d;
+	            this.e = _e;
+	            this.f = _f;
 
-	    Matrix.from = (function(){
-	        var Constructor = function(){};
-	        Constructor.prototype = Matrix.prototype;
+	            return this;
+	        }
+	    }, {
+	        key: "rotate",
+	        value: function rotate(angle) {
+	            var x = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	            var y = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
 
-	        return function from(arrayLike) {
-	            var mat = new Constructor();
-	            Matrix.apply(mat, arrayLike);
-	            return mat;
-	        };
-	    })();
+	            var c = cos(angle),
+	                s = sin(angle);
+	            this.translate(x, y);
+
+	            this.multiply(c, s, -s, c, 0, 0);
+
+	            this.translate(-x, -y);
+
+	            return this;
+	        }
+	    }, {
+	        key: "skewX",
+	        value: function skewX(a) {
+	            return this.multiply(1, 0, tan(a), 1, 0, 0);
+	        }
+	    }, {
+	        key: "skewY",
+	        value: function skewY(a) {
+	            return this.multiply(1, tan(a), 0, 1, 0, 0);
+	        }
+	    }, {
+	        key: "translate",
+	        value: function translate(x) {
+	            var y = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+	            return this.multiply(1, 0, 0, 1, x, y);
+	        }
+	    }, {
+	        key: "scale",
+	        value: function scale(x) {
+	            var y = arguments.length <= 1 || arguments[1] === undefined ? x : arguments[1];
+
+	            return this.multiply(x, 0, 0, y, 0, 0);
+	        }
+	    }, {
+	        key: "transformPoint",
+	        value: function transformPoint(x, y) {
+	            return {
+	                x: this.a * x + this.c * y + this.e,
+	                y: this.b * x + this.d * y + this.f
+	            };
+	        }
+	    }, {
+	        key: "asArray",
+	        value: function asArray() {
+	            return [this.a, this.b, this.c, this.d, this.e, this.f];
+	        }
+	    }]);
 
 	    return Matrix;
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}();
+
+	;
 
 /***/ }
 /******/ ])

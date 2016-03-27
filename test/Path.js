@@ -1,7 +1,7 @@
 var assert = require("assert");
+import {SuperCanvas, Path} from "..";
 
 describe('Path', function(){
-    var Path = require("../").Path;
 
     it("Should be able to construct paths", function(){
         var p = new Path();

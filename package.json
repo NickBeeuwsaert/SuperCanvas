@@ -4,7 +4,7 @@
   "description": "HTML5 Canvas library for parsing and using SVG paths",
   "main": "dist/SuperCanvas.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,10 @@
   },
   "homepage": "https://github.com/NickBeeuwsaert/SuperCanvas",
   "devDependencies": {
+    "babel-core": "^6.4.5",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-register": "^6.4.3",
     "mocha": "^2.2.5",
     "webpack": "^1.11.0"
   }
