@@ -1,0 +1,46 @@
+<svg width="500px" height="300px" viewBox="-10 -10 520 320" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <circle r="4" id="control_point" fill="none" stroke="black"/>
+      <circle r="2" id="mid_point" fill="black" stroke="none"/>
+      <style>
+        text {
+            font-size: 8pt;
+        }
+      </style>
+    </defs>
+    <path d="M0,300 C25,50 450,50 500,300" fill="none" stroke="hsl(196, 100%, 42%)" stroke-width="6"/>
+
+    <path d="M0,300 C16.25,137.5 201.5,80.625 342.915625,129.375" fill="none" stroke="red" stroke-width="2"/>
+    <path d="M342.915625,129.375 C419.0625,155.625 482.5,212.5 500,300" fill="none" stroke="green" stroke-width="2"/>
+    <!-- draw lines -->
+    <polyline fill="none" stroke="hsl(196, 100%, 42%)" stroke-dasharray="5,5"
+              points="0,300 25,50 450,50 500,300"/>
+    <polyline fill="none" stroke="hsl(196, 100%, 42%)" 
+              points="16.25,137.5 301.25,50.0 482.5,212.5"/>
+    <polyline fill="none" stroke="hsl(196, 100%, 42%)" 
+              points="201.5,80.625 419.0625,155.625"/>
+
+    <!-- draw in the contorl points -->
+    <use x="0" y="300" xlink:href="#control_point" />
+    <use x="25" y="50" xlink:href="#control_point" />
+    <use x="450" y="50" xlink:href="#control_point" />
+    <use x="500" y="300" xlink:href="#control_point" />
+
+    <!-- draw all the midpoints -->
+    <use x="16.25" y="137.5" xlink:href="#mid_point" />
+    <use x="301.25" y="50.0" xlink:href="#mid_point" />
+    <use x="482.5" y="212.5" xlink:href="#mid_point" />
+    <use x="201.5" y="80.625" xlink:href="#mid_point" />
+    <use x="419.0625" y="155.625" xlink:href="#mid_point" />
+    <use x="342.915625" y="129.375" xlink:href="#mid_point" />
+
+    <!-- draw secondary control points -->
+
+    <use x="16.25" y="137.5" xlink:href="#control_point" />
+    <use x="342.915625" y="129.375" xlink:href="#control_point" />
+    <use x="482.5" y="212.5" xlink:href="#control_point" />
+    <use x="201.5" y="80.625" xlink:href="#control_point" />
+    <use x="419.0625" y="155.625" xlink:href="#control_point" />
+
+
+</svg>

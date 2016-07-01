@@ -1471,9 +1471,9 @@
 
 
     paths.forEach(function(path) {
-        ctx.setFill(path.fill=="none"?"transparent":path.fill);
-        ctx.setStroke(path.stroke=="none"?"transparent":path.stroke);
-        ctx.setLineWidth(parseFloat(path.lineWidth));
+        ctx.fillStyle = path.fill=="none"?"transparent":path.fill;
+        ctx.strokeStyle = path.stroke=="none"?"transparent":path.stroke;
+        ctx.lineWidth = parseFloat(path.lineWidth);
         ctx.drawPath(path.d);
         ctx.fill();
         ctx.stroke();

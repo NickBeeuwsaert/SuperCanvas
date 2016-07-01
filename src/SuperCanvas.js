@@ -2,85 +2,75 @@ import {Path} from "./Path";
 import {Matrix} from "./Matrix";
 export {Path, Matrix};
 
-export function SuperCanvas(canvas) {
-    if(!canvas) {
-        throw new Error("Need an argument");
+export class SuperCanvas {
+    constructor(canvas) {
+        if(!canvas) throw new Error("Missing required argument");
+        // Handle receiving a context
+        if(canvas.canvas) canvas = canvas.canvas;
+
+        if(!canvas.getContext) throw new Error("Can't get context");
+
+        this.context = canvas.getContext("2d");
+        this.canvas = canvas;
     }
 
-    if(canvas.canvas) { //We got a context instance
-        canvas = canvas.canvas;
-    }
+    set fillStyle(fill) { this.context.fillStyle = fill; }
+    get fillStyle() { return this.context.fillStyle; }
 
-    if(!canvas.getContext) {
-        throw new Error("Can't get canvas context");
-    }
+    set strokeStyle(stroke) { this.context.strokeStyle = stroke; }
+    get strokeStyle() { return this.context.strokeStyle; }
 
-    this.context = canvas.getContext('2d');
-    this.canvas  = canvas;
-};
+    set lineWidth(width) { this.context.lineWidth = width; }
+    get lineWidth() { return this.context.lineWidth; }
 
+    set lineCap(capStyle) { this.context.lineCap = capStyle; }
+    get lineCap() { return this.context.lineCap; }
+    
 
-SuperCanvas.fn = {
-    setFill(fill) {
-        this.context.fillStyle = fill;
-    },
-    setStroke(stroke) {
-        this.context.strokeStyle = stroke;
-    },
-    setLineWidth(width) {
-        this.context.lineWidth = width;
-    },
-    drawPath(d, transform) {
-        //var ctx = this.context;
-        var t = this;
-        t.beginPath();
+    drawPath(d, transform=null) {
+        this.beginPath();
         Path.each(d, function(segment) {
-            var command = segment.shift();
+            let command = segment.shift();
+
             switch(command) {
-                case "M":
-                    t.moveTo.apply(t, segment);
+                case 'M':
+                    this.moveTo(...segment);
                 break;
-                case "L":
-                    t.lineTo.apply(t, segment);
+                case 'L':
+                    this.lineTo(...segment);
                 break;
-                case "C":
-                    t.bezierCurveTo.apply(t, segment);
+                case 'C':
+                    this.bezierCurveTo(...segment);
                 break;
-                case "Q":
-                    t.quadraticCurveTo.apply(t, segment);
+                case 'Q':
+                    this.quadraticCurveTo(...segment);
                 break;
-                case "Z":
-                    t.closePath();
+                case 'Z':
+                    this.closePath();
                 break;
             }
-        }, this);
-    },
-};
+        }.bind(this));
+    }
 
-//Autocreate functions
-[
-    'beginPath',
-    'closePath',
-    'lineTo',
-    'moveTo',
-    'bezierCurveTo',
-    'quadraticCurveTo',
-    'translate',
-    'rotate',
-    'scale',
-    'save',
-    'restore',
-    'fillText',
-    'stroke',
-    'fill'
-].forEach(function(cmd) {
-    SuperCanvas.fn[cmd] = function() {
-        //this.lastCommand = [].slice.call(arguments);
-        this.context[cmd].apply(this.context, arguments);
-        return this;
-    };
-});
+    // Drawing
+    beginPath() { this.context.beginPath(); }
+    closePath() { this.context.closePath(); }
 
+    lineTo(x, y) { this.context.lineTo(x, y); }
+    moveTo(x, y) { this.context.moveTo(x, y); }
+    quadraticCurveTo(cp0x, cp0y, x, y) { this.context.quadraticCurveTo(cp0x, cp0y, x, y); }
+    bezierCurveTo(cp0x, cp0y, cp1x, cp1y, x, y) { this.context.bezierCurveTo(cp0x, cp0y, cp1x, cp1y, x, y); }
 
-SuperCanvas.prototype = SuperCanvas.fn;
+    // Transformations
+    save() { this.context.save(); }
+    rotate(angle) { this.context.rotate(angle); }
+    scale(x, y) { this.context.scale(x, y); }
+    translate(x, y) { this.context.translate(x, y); }
+    restore() { this.context.restore(); }
+
+    // Painting
+    fill() { this.context.fill(); }
+    stroke() { this.context.stroke(); }
+}
+
 

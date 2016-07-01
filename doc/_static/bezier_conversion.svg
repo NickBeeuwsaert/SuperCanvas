@@ -1,0 +1,28 @@
+<svg width="100%" height="100%" viewBox="-10 -10 520 320" preserveAspectRatio="xMidYMid" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <g id="control_point">
+        <circle r="4" fill="none" stroke="black"/>
+        <circle r="2" fill="black" stroke="none"/>
+      </g>
+      <style>
+        text {
+            font-size: 8pt;
+            fill: black;
+        }
+      </style>
+    </defs>
+    <path d="M0,300 Q25,50 500,300" fill="none" stroke="hsl(196, 100%, 42%)" stroke-width="6"/>
+    <polyline points="0,300 25,50 500,300" fill="none" stroke="hsl(196, 100%, 42%)" stroke-width="6"/>
+    <path d="M0,300 C16.666666666666664,133.33333333333334 183.33333333333331,133.33333333333331 500,300" fill="none" stroke="black" stroke-width="2"/>
+    <polyline points="0,300 16.666666666666664,133.33333333333334 183.33333333333331,133.33333333333331 500,300" fill="none" stroke="black" stroke-width="2"/>
+
+    <use x="0" y="300" xlink:href="#control_point" />
+    <use x="25" y="50" xlink:href="#control_point" />
+    <use x="500" y="300" xlink:href="#control_point" />
+
+
+    <use x="0" y="300" xlink:href="#control_point" />
+    <use x="16.666666666666664" y="133.33333333333334" xlink:href="#control_point" />
+    <use x="183.33333333333331" y="133.33333333333331" xlink:href="#control_point" />
+    <use x="500" y="300" xlink:href="#control_point" />
+</svg>
