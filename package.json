@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --compilers js:buble/register",
     "uglify": "uglifyjs -o dist/SuperCanvas.min.js --source-map dist/SuperCanvas.min.map dist/SuperCanvas.js",
-    "build": "rollup -c; npm run test; npm run uglify",
+    "build": "rollup -c; npm run test; npm run uglify"
   },
   "repository": {
     "type": "git",
