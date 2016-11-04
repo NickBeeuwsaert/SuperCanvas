@@ -1,8 +1,8 @@
-import {Path} from "./Path";
-import {Matrix} from "./Matrix";
-export {Path, Matrix};
+import Path from "./Path";
+import Matrix from "./Matrix";
+export { Path, Matrix };
 
-export class SuperCanvas {
+export default class SuperCanvas {
     constructor(canvas) {
         if(!canvas) throw new Error("Missing required argument");
         // Handle receiving a context

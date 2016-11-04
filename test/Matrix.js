@@ -1,5 +1,6 @@
 var assert = require("assert");
-import {SuperCanvas, Matrix} from "../";
+var { SuperCanvas, Matrix } = require("../");
+
 
 describe('Matrix', function() {
 

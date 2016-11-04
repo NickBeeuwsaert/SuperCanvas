@@ -4,9 +4,9 @@
  * [ b d f ]
  * [ 0 0 1 ]
  */
-let {cos, sin, tan} = Math;
+let { cos, sin, tan } = Math;
 
-export class Matrix {
+export default class Matrix {
     constructor(a = 1, b = 0, c = 0, d = 1, e = 0, f = 0) {
         this.a = a;
         this.b = b;
